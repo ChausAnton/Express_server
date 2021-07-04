@@ -1,18 +1,24 @@
 {
   "name": "js_test",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "env NODE_ENV=development nodemon src/index.js"
   },
-  "author": "",
+  "author": "chaus anton",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^10.0.0",
+    "esm": "^3.2.25",
     "express": "^4.17.1",
+    "helmet": "^4.6.0",
+    "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "mysql-migrations": "^1.0.7",
     "mysql2": "^2.2.5",
+    "nodemon": "^2.0.9",
     "sequelize": "^6.6.4"
-  }
+  },
+  "description": ""
 }

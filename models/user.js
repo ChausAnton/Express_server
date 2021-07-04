@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     rating: DataTypes.INTEGER,
     password_reset_token: DataTypes.STRING,
     image_path: DataTypes.STRING,
-    role: DataTypes.ENUM('admin', 'user')
+    role: DataTypes.ENUM('admin', 'user'),
   }, {
     sequelize,
     modelName: 'User',

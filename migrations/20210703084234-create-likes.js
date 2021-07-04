@@ -8,9 +8,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      author: {
-        type: Sequelize.STRING
-      },
       author_id: {
         type: Sequelize.INTEGER,
         references: {
@@ -38,12 +35,14 @@ module.exports = {
         type: Sequelize.ENUM('like', 'dislike')
       },
       createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+        type: 'TIMESTAMP',
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        allowNull: false
       },
       updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+        type: 'TIMESTAMP',
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        allowNull: false
       }
     });
   },

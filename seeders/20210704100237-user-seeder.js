@@ -1,4 +1,5 @@
 'use strict';
+var bcrypt = require("bcryptjs");
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -7,7 +8,7 @@ module.exports = {
         login: 'Admin',
         real_name: 'daun1',
         email: '11@gmail.com',
-        password: '1111',
+        password: bcrypt.hashSync('1111', 8),
         rating: '0',
         image_path: 'some default path',
         role: 'admin'
@@ -16,7 +17,7 @@ module.exports = {
         login: 'user1',
         real_name: 'daun2',
         email: '22@gmail.com',
-        password: '1111',
+        password: bcrypt.hashSync('1111', 8),
         rating: '0',
         image_path: 'some default path',
         role: 'user'
@@ -25,7 +26,7 @@ module.exports = {
         login: 'user2',
         real_name: 'daun3',
         email: '33@gmail.com',
-        password: '1111',
+        password: bcrypt.hashSync('1111', 8),
         rating: '0',
         image_path: 'some default path',
         role: 'user'
@@ -34,7 +35,7 @@ module.exports = {
         login: 'user3',
         real_name: 'daun4',
         email: '44@gmail.com',
-        password: '1111',
+        password: bcrypt.hashSync('1111', 8),
         rating: '0',
         image_path: 'some default path',
         role: 'user'

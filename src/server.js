@@ -11,6 +11,7 @@ app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({extended: true, limit: '50mb'}));
 
 app.use('/user', routes.user);
+app.use('/auth', routes.auth);
 
 app.use((req, res) => {
     res.status(404).send('404 page not found');

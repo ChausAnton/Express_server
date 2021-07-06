@@ -14,7 +14,6 @@ exports.signUp = async(req, res) => {
         ]
     }}).then(user => {
         if(user.length) {
-            console.log(user)
             return res.status(400).send("User already exist");
         }
         const schema = {

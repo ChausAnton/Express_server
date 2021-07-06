@@ -13,7 +13,8 @@ exports.signUp = async(req, res) => {
             {email: req.body.email}
         ]
     }}).then(user => {
-        if(user) {
+        if(user.length) {
+            console.log(user)
             return res.status(400).send("User already exist");
         }
         const schema = {

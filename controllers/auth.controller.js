@@ -34,7 +34,7 @@ exports.signUp = async(req, res) => {
             passwordConfirmation: req.body.passwordConfirmation,
             role: req.body.role,
             image_path: "standart path",
-            ratig: 0
+            rating: 0
         }
 
         const v = new Validator();

@@ -10,6 +10,8 @@ module.exports = {
       },
       post_id: {
         type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
         references: {
           model: 'Posts',
           key: 'id',
@@ -17,6 +19,8 @@ module.exports = {
       },
       category_id: {
         type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
         references: {
           model: 'Categories',
           key: 'id',

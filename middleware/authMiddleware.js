@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const db = require('../models');
 const User = db.User;
 
-exports.checkUser = (req, res, next) => {
+exports.checkUser = async(req, res, next) => {
     const token = req.headers["x-access-token"];
 
     if(token) {
@@ -14,6 +14,7 @@ exports.checkUser = (req, res, next) => {
             else {
                 let user = await User.findOne({ where: { id: decodedToken.id } })
                 res.locals.user = user;
+                res.locals.admin = (res.locals.user.role.localeCompare('admin') == 0);
                 next();
             }
         })

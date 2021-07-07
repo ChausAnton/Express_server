@@ -7,7 +7,7 @@ const db = require('../models');
 const User = db.User;
 
 exports.signUp = async(req, res) => {
-    let user = User.findAll({where: 
+    User.findAll({where: 
         {[Op.or]: [
             {login: req.body.login}, 
             {email: req.body.email}
@@ -23,6 +23,13 @@ exports.signUp = async(req, res) => {
             password: { type: "string", min: 3 },
             passwordConfirmation: { type: "equal", field: "password" },
             role: { type: "string", enum: [ "user", "admin" ] },
+        }
+
+        if (req.body.role.localeCompare('admin') == 0) {
+            console.log("ok")
+            if(!res.locals.admin) {
+                return res.status(401).send("Only admin can create admin")
+            }
         }
     
         let data = {
@@ -48,7 +55,7 @@ exports.signUp = async(req, res) => {
         data.password = bcrypt.hashSync(req.body.password, 8)
         User.create(data);
         console.log(user)
-        res.status(200).send({
+        res.status(201).send({
             message: "User created",
         });
     });
@@ -56,7 +63,7 @@ exports.signUp = async(req, res) => {
 }
 
 exports.signIn = async(req, res) => {
-    let user = User.findOne({where: {login: req.body.login}}).then(user => {
+    User.findOne({where: {login: req.body.login}}).then(user => {
         if(!user) {
             return res.status(404).send({message: "User not found"});
         };

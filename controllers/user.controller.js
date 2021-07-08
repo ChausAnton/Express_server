@@ -1,8 +1,9 @@
-const db = require('../models');
-const Validator  = require('fastest-validator');
-const User = db.User;
-const jwt = require('jsonwebtoken');
 require('dotenv').config()
+const jwt = require('jsonwebtoken');
+const Validator  = require('fastest-validator');
+const db = require('../models');
+const User = db.User;
+
 
 exports.getUser = async(req, res) => {
     User.findOne({ attributes: {
@@ -26,41 +27,43 @@ exports.getUsers = async(req, res) => {
 }
 
 exports.updateUser = async(req, res) => {
-    // const schema = {
-    //     role: { type: "string", option: true, enum: [ "user", "admin" ] },
-    //     real_name: {type: "string", option: true, max: "100"},
-    //     image_path: {type: "string", option: true, max: "100"}
-    // }
+    const schema = {
+        role: { type: "string", optional: true, enum: [ "user", "admin" ] },
+        real_name: {type: "string", optional: true, max: "100"},
+        image_path: {type: "string", optional: true, max: "100"}
+    }
 
-    // let data = {
-    //     role: req.body.role,
-    //     real_name: req.body.real_name,
-    //     image_path: req.body.image_path
-    // }
+    let data = {
+        role: req.body.role,
+        real_name: req.body.real_name,
+        image_path: req.body.image_path
+    }
 
-    // const v = new Validator();
-    // const validationresponse = v.validate(data, schema);
-    // if(validationresponse !== true) {
-    //     return res.status(400).json({
-    //         message: "Validation fail",
-    //         errors: validationresponse
-    //     });
-    // }
+    const v = new Validator();
+    const validationresponse = v.validate(data, schema);
+    if(validationresponse !== true) {
+        return res.status(400).json({
+            message: "Validation fail",
+            errors: validationresponse
+        });
+    }
 
-    if(res.locals.admin) {
+    if(res.locals.admin && req.body.role) {
 
         User.update({role: req.body.role}, {where: {id: req.params.id}}).then(() => {
             res.status(201).send("role updated");
         })
-
+        return;
     }
-    if(res.locals.user && res.locals.user.id == req.params.id) {
+    if(res.locals.user && res.locals.user.id == req.params.id && (req.body.real_name || req.body.image_path)) {
         
         User.update({image_path: req.body.image_path, real_name: req.body.real_name}, {where: {id: req.params.id}}).then(() => {
             res.status(201).send("data updated");
         })
-
+        return;
     }
+
+    res.status(403).send("You don't have permission to change this data");
 }
 
 exports.deleteUser = async(req, res) => {

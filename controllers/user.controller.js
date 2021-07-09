@@ -50,20 +50,18 @@ exports.updateUser = async(req, res) => {
 
     if(res.locals.admin && req.body.role) {
 
-        User.update({role: req.body.role}, {where: {id: req.params.id}}).then(() => {
-            res.status(201).send("role updated");
-        })
-        return;
+        User.update({role: req.body.role}, {where: {id: req.params.id}});
     }
+    
     if(res.locals.user && res.locals.user.id == req.params.id && (req.body.real_name || req.body.image_path)) {
         
-        User.update({image_path: req.body.image_path, real_name: req.body.real_name}, {where: {id: req.params.id}}).then(() => {
-            res.status(201).send("data updated");
-        })
-        return;
+        User.update({image_path: req.body.image_path, real_name: req.body.real_name}, {where: {id: req.params.id}});
     }
 
-    res.status(403).send("You don't have permission to change this data");
+    if(!res.locals.admin && !(res.locals.user.id == req.params.id))
+        res.status(403).send("You don't have permission to change this data");
+    else
+        res.status(201).send("data updated");
 }
 
 exports.deleteUser = async(req, res) => {

@@ -54,7 +54,6 @@ exports.signUp = async(req, res) => {
 
         data.password = bcrypt.hashSync(req.body.password, 8)
         User.create(data);
-        console.log(user)
         res.status(201).send({
             message: "User created",
         });

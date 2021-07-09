@@ -2,9 +2,9 @@ import { Router } from "express";
 const user = require('../controllers/user.controller');
 const router = Router();
 
-router.get('/GetUser/:id', user.getUser)
-router.get('/users', user.getUsers)
-router.delete('/delete/:id', user.deleteUser)
-router.put('/update/:id', user.updateUser)
+router.get('/getUser/:id', user.getUser)
+router.get('/getUsers', user.getUsers)
+router.delete('/deleteUser/:id', user.deleteUser)
+router.put('/updateUser/:id', user.updateUser)
 
 export default router;

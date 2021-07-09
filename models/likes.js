@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Likes.init({
-    author: DataTypes.STRING,
     author_id: DataTypes.INTEGER,
     post_id: {
       type: DataTypes.INTEGER,

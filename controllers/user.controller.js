@@ -69,6 +69,6 @@ exports.deleteUser = async(req, res) => {
         return res.status(401).send("Only andmin can delete user");
     }
     User.destroy({where: {id: req.params.id}}).then(() => {
-        res.status(200).send("result");
+        res.status(200).send("success");
     })
 }

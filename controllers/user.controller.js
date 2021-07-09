@@ -58,7 +58,7 @@ exports.updateUser = async(req, res) => {
         User.update({image_path: req.body.image_path, real_name: req.body.real_name}, {where: {id: req.params.id}});
     }
 
-    if(!res.locals.admin && !(res.locals.user.id == req.params.id))
+    if(!res.locals.admin && !(res.locals.user && res.locals.user.id == req.params.id))
         res.status(403).send("You don't have permission to change this data");
     else
         res.status(201).send("data updated");

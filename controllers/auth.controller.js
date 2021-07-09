@@ -83,6 +83,8 @@ exports.signIn = async(req, res) => {
             expiresIn: 86400
         });
 
+        User.update({token: token}, {where: {id: user.id}});
+
         res.status(200).send({
             id: user.id,
             login: user.login,
@@ -93,4 +95,12 @@ exports.signIn = async(req, res) => {
             accessToken: token
         })
     })
+};
+
+exports.logout = async(req, res) => {
+    if(res.locals.user && res.locals.user.id == req.params.id) {
+        User.update({token: null}, {where: {id:  res.locals.user.id}});
+        res.cookie('jwt', '', {maxAge: 1});
+        res.status(200).send('success')
+    }
 };

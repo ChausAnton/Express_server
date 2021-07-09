@@ -13,9 +13,16 @@ exports.checkUser = async(req, res, next) => {
             }
             else {
                 let user = await User.findOne({ where: { id: decodedToken.id } })
-                res.locals.user = user;
-                res.locals.admin = (res.locals.user.role.localeCompare('admin') == 0);
-                next();
+                let bdToken = user.token
+                if(bdToken && bdToken.localeCompare(token) == 0) {
+                    res.locals.user = user;
+                    res.locals.admin = (res.locals.user.role.localeCompare('admin') == 0);
+                    next();
+                }
+                else {
+                    res.locals.user = null;
+                    next();
+                }
             }
         })
     }

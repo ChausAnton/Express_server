@@ -97,7 +97,7 @@ exports.signIn = async(req, res) => {
 };
 
 exports.logout = async(req, res) => {
-    if(res.locals.user && res.locals.user.id == req.params.id) {
+    if(res.locals.user) {
         User.update({token: null}, {where: {id:  res.locals.user.id}});
         res.cookie('jwt', '', {maxAge: 1});
         res.status(200).send('success')

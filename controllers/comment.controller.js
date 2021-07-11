@@ -1,63 +1,64 @@
 const Validator  = require('fastest-validator');
 const db = require('../models');
-const Post = db.Post
+const Comment = db.Comments
 
-exports.getPost = async(req, res) => {
+exports.getComment = async(req, res) => {
     if(res.locals.user && res.locals.admin) {
-        Post.findOne({where: {id: req.params.id}}).then((post) => {
-            if(post) {
-                res.status(200).send(post);
+        Comment.findOne({where: {id: req.params.id}}).then((comment) => {
+            if(comment) {
+                res.status(200).send(comment);
             }
             else {
-                res.status(404).send("post not found");
+                res.status(404).send("comment not found");
             }
         });
     }
     else {
-        Post.findOne({where: {id: req.params.id, status: "active"}}).then((post) => {
-            if(post) {
-                res.status(200).send(post);
+        Comment.findOne({where: {id: req.params.id, status: "active"}}).then((comment) => {
+            if(comment) {
+                res.status(200).send(comment);
             }
             else {
-                res.status(404).send("post not found");
+                res.status(404).send("comment not found");
             }
         });
     }
 };
 
-exports.getPosts = async(req, res) => {
+exports.getComments = async(req, res) => {
     if(res.locals.user && res.locals.admin) {
-        Post.findAll({}).then((post) => {
-            if(post) {
-                res.status(200).send(post)
+        Comment.findAll({}).then((comments) => {
+            if(comments) {
+                res.status(200).send(comments)
             }
             else {
-                res.status(404).send("posts not found")
+                res.status(404).send("comments not found")
             }
         });
     }
     else {
-        Post.findAll({where: {status: "active"}}).then((post) => {
-            if(post) {
-                res.status(200).send(post)
+        Comment.findAll({where: {status: "active"}}).then((comments) => {
+            if(comments) {
+                res.status(200).send(comments)
             }
             else {
-                res.status(404).send("posts not found")
+                res.status(404).send("comments not found")
             }
         });
     }
 };
 
-exports.createPost = async(req, res) => {
+
+exports.createComment = async(req, res) => {
     if(res.locals.user) {
         const schema = {
-            title: {type: "string"},
+            post_id: {type: "number"},
             content: {type: "string"},
         };
 
         let data = {
+            post_id: req.body.post_id,
             author_id: res.locals.user.id,
-            title: req.body.title,
             content: req.body.content,
             likes: 0,
             status: "active",
@@ -72,7 +73,7 @@ exports.createPost = async(req, res) => {
             });
         }
 
-        Post.create(data);
+        Comment.create(data);
         res.status(201).send(data);
     }
     else {
@@ -80,16 +81,14 @@ exports.createPost = async(req, res) => {
     }
 }
 
-exports.updatePost = async(req, res) => {
+exports.updateComment = async(req, res) => {
     const schema = {
         status: { type: "string", optional: true, enum: [ "active", "inactive" ] },
-        title: {type: "string", optional: true},
         content: {type: "string", optional: true}
     }
 
     let data = {
         status: req.body.status,
-        title: req.body.title,
         content: req.body.content
     }
 
@@ -102,15 +101,15 @@ exports.updatePost = async(req, res) => {
         });
     }
 
-    let post = await Post.findOne({where: {id: req.params.id}})
+    let comment = await Comment.findOne({where: {id: req.params.id}})
 
     if(res.locals.admin && req.body.status) {
 
-        Post.update({status: req.body.status}, {where: {id: req.params.id}});
+        Comment.update({status: req.body.status}, {where: {id: req.params.id}});
     }
     
-    if(res.locals.user && (req.body.title || req.body.content) && post && post.author_id == res.locals.user.id) {
-        Post.update({title: req.body.title, content: req.body.content}, {where: {id: req.params.id}})
+    if(res.locals.user && (req.body.title || req.body.content) && comment && comment.author_id == res.locals.user.id) {
+        Comment.update({content: req.body.content}, {where: {id: req.params.id}})
     }
 
     if(!res.locals.admin && !res.locals.user)
@@ -119,13 +118,13 @@ exports.updatePost = async(req, res) => {
         res.status(200).send("data updated");
 };
 
-exports.deletePost = async(req, res) => {
-    let post = await Post.findOne({where: {id: req.params.id}})
+exports.deleteComment = async(req, res) => {
+    let comment = await Comment.findOne({where: {id: req.params.id}})
 
-    if(!res.locals.admin && (!res.locals.user || (post.author_id != res.locals.user.id))) {
-        return res.status(401).send("Only andmin and author can delete post");
+    if(!res.locals.admin && (!res.locals.user || (comment.author_id != res.locals.user.id))) {
+        return res.status(401).send("Only andmin and author can delete comment");
     }
-    Post.destroy({where: {id: req.params.id}}).then(() => {
+    Comment.destroy({where: {id: req.params.id}}).then(() => {
         res.status(200).send("success");
     })
 };

@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     author_id: DataTypes.INTEGER,
     post_id: DataTypes.INTEGER,
     content: DataTypes.STRING,
-    rating: DataTypes.INTEGER,
+    likes: DataTypes.INTEGER,
     status: DataTypes.ENUM('active', 'inactive')
   }, {
     sequelize,

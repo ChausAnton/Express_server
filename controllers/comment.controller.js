@@ -109,7 +109,7 @@ exports.updateComment = async(req, res) => {
     }
     
     if(res.locals.user && (req.body.title || req.body.content) && comment && comment.author_id == res.locals.user.id) {
-        Comment.update({content: req.body.content}, {where: {id: req.params.id}})
+        Comment.update({title: req.body.title, content: req.body.content}, {where: {id: req.params.id}})
     }
 
     if(!res.locals.admin && !res.locals.user)

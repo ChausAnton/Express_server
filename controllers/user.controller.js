@@ -8,9 +8,9 @@ const User = db.User;
 exports.getUser = async(req, res) => {
     User.findOne({ attributes: {
             exclude: ['password', 'token', 'password_reset_token']
-        }
-    }, {where: {id: req.params.id}}).then((user) => {
-        res.send(user);
+        }, where: {id: req.params.id}}).then((user) => {
+        console.log(user)
+        res.status(200).send(user);
     })
 };
 

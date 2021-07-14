@@ -1,13 +1,15 @@
 const Validator  = require('fastest-validator');
 const db = require('../models');
-const Category_sub_table = require('../middleware/CategorySubTableMiddleware');
+const PostMiddleware = require('../middleware/PostMiddleware');
 const Post = db.Post
+const sequelize = db.sequelize
+const { Op } = require("sequelize");
 
 exports.getPost = async(req, res) => {
     if(res.locals.user && res.locals.admin) {
         Post.findOne({where: {id: req.params.id}}).then(async(post) => {
             if(post) {
-                categories = await Category_sub_table.getCategoriesForPost(post.id);
+                categories = await PostMiddleware.getCategoriesForPost(post.id);
                 res.status(200).send([
                     post,
                     categories
@@ -21,7 +23,7 @@ exports.getPost = async(req, res) => {
     else {
         Post.findOne({where: {id: req.params.id, status: "active"}}).then(async(post) => {
             if(post) {
-                categories = await Category_sub_table.getCategoriesForPost(post.id);
+                categories = await PostMiddleware.getCategoriesForPost(post.id);
                 res.status(200).send([
                     post,
                     categories
@@ -40,10 +42,11 @@ exports.getPosts = async(req, res) => {
             if(posts) {
                 let PostsCats = [];
                 for(let post of posts) {
-                    categories = await Category_sub_table.getCategoriesForPost(post.id);
+                    categories = await PostMiddleware.getCategoriesForPost(post.id);
                     PostsCats.push([post, categories])
                 }
-                res.status(200).send(PostsCats)
+                const pagePosts = PostMiddleware.getPostForPage(req.body.page, PostsCats)
+                res.status(200).send(pagePosts)
             }
             else {
                 res.status(404).send("posts not found")
@@ -55,10 +58,11 @@ exports.getPosts = async(req, res) => {
             if(posts) {
                 let PostsCats = []
                 for(let post of posts) {
-                    categories = await Category_sub_table.getCategoriesForPost(post.id);
+                    categories = await PostMiddleware.getCategoriesForPost(post.id);
                     PostsCats.push([post, categories])
                 }
-                res.status(200).send(PostsCats)
+                const pagePosts = PostMiddleware.getPostForPage(req.body.page, PostsCats)
+                res.status(200).send(pagePosts)
             }
             else {
                 res.status(404).send("posts not found")
@@ -94,7 +98,7 @@ exports.createPost = async(req, res) => {
         }
 
         Post.create(data).then(async(post) => {
-            await Category_sub_table.addCategory(req.body.category_id, post.id)
+            await PostMiddleware.addCategory(req.body.category_id, post.id)
             res.status(201).send(data);
         });
         
@@ -131,7 +135,7 @@ exports.updatePost = async(req, res) => {
     let post = await Post.findOne({where: {id: req.params.id}})
 
     if(req.body.category_id && ((res.locals.user && post.author_id == res.locals.user.id) || res.locals.admin)) {
-        Category_sub_table.addCategory(req.body.category_id, post.id);
+        PostMiddleware.addCategory(req.body.category_id, post.id);
     }
 
     if(res.locals.admin && req.body.status) {
@@ -159,3 +163,62 @@ exports.deletePost = async(req, res) => {
         res.status(200).send("success");
     })
 };
+
+exports.getPostDateFilter = async(req, res) => {
+
+    const schema = {
+        dateStart: { type: "string"},
+        dateEnd: {type: "string"}
+    }
+
+    let data = {
+        dateStart: req.body.dateStart,
+        dateEnd: req.body.dateEnd
+    }
+
+    const v = new Validator();
+    const validationresponse = v.validate(data, schema);
+    if(validationresponse !== true) {
+        return res.status(400).json({
+            message: "Validation fail",
+            errors: validationresponse
+        });
+    }
+
+    if(res.locals.user && res.locals.admin) {
+        Post.findAll({where: {createdAt: {
+                    [Op.between]: [data.dateStart, data.dateEnd]
+                }
+            }}).then(async(posts) => {
+            if(posts) {
+                let PostsCats = [];
+                for(let post of posts) {
+                    categories = await PostMiddleware.getCategoriesForPost(post.id);
+                    PostsCats.push([post, categories])
+                }
+                res.status(200).send(PostsCats);
+            }
+            else {
+                res.status(404).send("posts not found")
+            }
+        });
+    }
+    else {
+        Post.findAll({where: {createdAt: {
+            [Op.between]: [data.dateStart, data.dateEnd]
+        }, status: 'active'
+        }}).then(async(posts) => {
+            if(posts) {
+                let PostsCats = [];
+                for(let post of posts) {
+                    categories = await PostMiddleware.getCategoriesForPost(post.id);
+                    PostsCats.push([post, categories])
+                }
+                res.status(200).send(PostsCats);
+            }
+            else {
+                res.status(404).send("posts not found")
+            }
+        });
+    }
+}

@@ -21,3 +21,20 @@ exports.addCategory = async(CategroyJson, postID) => {
 exports.getCategoriesForPost = async(postID) => {
     return await Category_sub_table.findAll({where: {post_id: postID}})
 };
+
+exports.getPostForPage = (page, posts) => {
+    if(!page && page != 0) {
+        return posts;
+    }
+    const postsPerPage = 10;
+
+    const startPost = page * postsPerPage;
+    const endPost = page * postsPerPage + 10;
+    let pagePosts = [];
+
+    for(let i = startPost; i < endPost; i++) {
+        if(posts[i])
+            pagePosts.push(posts[i]);
+    }
+    return pagePosts;
+};

@@ -5,7 +5,7 @@ const Post = db.Post
 const User = db.User;
 
 exports.Change = async(post_id, comment_id, number) => {
-    var author_id = 0;
+    let author_id = 0;
 
     if(post_id) {
         const post = await Post.findOne({where: {id: post_id}});

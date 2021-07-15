@@ -154,7 +154,7 @@ exports.updatePost = async(req, res) => {
 };
 
 exports.deletePost = async(req, res) => {
-    let post = await Post.findOne({where: {id: req.params.id}})
+    let post = await Post.findOne({where: {id: req.params.id}});
 
     if(!res.locals.admin && (!res.locals.user || (post.author_id != res.locals.user.id))) {
         return res.status(401).send("Only andmin and author can delete post");
@@ -169,12 +169,12 @@ exports.getPostDateFilter = async(req, res) => {
     const schema = {
         dateStart: { type: "string"},
         dateEnd: {type: "string"}
-    }
+    };
 
     let data = {
         dateStart: req.body.dateStart,
         dateEnd: req.body.dateEnd
-    }
+    };
 
     const v = new Validator();
     const validationresponse = v.validate(data, schema);
@@ -222,3 +222,32 @@ exports.getPostDateFilter = async(req, res) => {
         });
     }
 }
+
+exports.getPostCategoryFilter = async(req, res) => {
+    const schema = {
+        categories_id: { type: "object"},
+    };
+
+    let data = {
+        categories_id: req.body.categories_id
+    };
+
+    const v = new Validator();
+    const validationresponse = v.validate(data, schema);
+    if(validationresponse !== true) {
+        return res.status(400).json({
+            message: "Validation fail",
+            errors: validationresponse
+        });
+    }
+    const posts = await PostMiddleware.getPostsByCategory(data.categories_id);
+    let PostsCats = [];
+    for(let post of posts) {
+        categories = await PostMiddleware.getCategoriesForPost(post.id);
+        PostsCats.push([post, categories])
+    }
+    const pagePosts = PostMiddleware.getPostForPage(req.body.page, PostsCats)
+    res.status(200).send(pagePosts)
+    
+    
+};

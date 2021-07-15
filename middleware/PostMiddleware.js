@@ -1,5 +1,7 @@
 const db = require('../models');
 const Category_sub_table = db.Category_sub_table;
+const Post = db.Post
+const { Op } = require("sequelize");
 
 exports.addCategory = async(CategroyJson, postID) => {
     Category_sub_table.destroy({where: {post_id: postID}}).then(async() => {
@@ -37,4 +39,32 @@ exports.getPostForPage = (page, posts) => {
             pagePosts.push(posts[i]);
     }
     return pagePosts;
+};
+
+exports.getPostsByCategory = async(CategroyJson) => {
+    let posts;
+    let categories_id = [];
+    let posts_id = [];
+    for(const [key, value] of Object.entries(CategroyJson)) {
+        categories_id.push(value);
+    }
+
+    categories = await Category_sub_table.findAll({where: 
+        {category_id:  {
+                [Op.or]: categories_id
+            }
+        }
+    });
+
+    for(let cat of categories) {
+        posts_id.push(cat.post_id);
+    }
+    posts = await Post.findAll({where: 
+        {id:  {
+                [Op.or]: posts_id
+            }
+        }
+    });
+    
+    return posts;
 };

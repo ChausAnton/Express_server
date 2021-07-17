@@ -40,13 +40,9 @@ exports.getPosts = async(req, res) => {
     if(res.locals.user && res.locals.admin) {
         Post.findAll({}).then(async(posts) => {
             if(posts) {
-                let PostsCats = [];
-                for(let post of posts) {
-                    categories = await PostMiddleware.getCategoriesForPost(post.id);
-                    PostsCats.push([post, categories])
-                }
-                const pagePosts = PostMiddleware.getPostForPage(req.body.page, PostsCats)
-                res.status(200).send(pagePosts)
+                posts = PostMiddleware.getPostForPage(req.body.page, posts)
+                const PostsCats = await PostMiddleware.getCategoriesForPosts(posts);
+                res.status(200).send(PostsCats)
             }
             else {
                 res.status(404).send("posts not found")
@@ -56,13 +52,9 @@ exports.getPosts = async(req, res) => {
     else {
         Post.findAll({where: {status: "active"}}).then(async(posts) => {
             if(posts) {
-                let PostsCats = []
-                for(let post of posts) {
-                    categories = await PostMiddleware.getCategoriesForPost(post.id);
-                    PostsCats.push([post, categories])
-                }
-                const pagePosts = PostMiddleware.getPostForPage(req.body.page, PostsCats)
-                res.status(200).send(pagePosts)
+                posts = PostMiddleware.getPostForPage(req.body.page, posts)
+                const PostsCats = await PostMiddleware.getCategoriesForPosts(posts);
+                res.status(200).send(PostsCats)
             }
             else {
                 res.status(404).send("posts not found")
@@ -250,4 +242,31 @@ exports.getPostCategoryFilter = async(req, res) => {
     res.status(200).send(pagePosts)
     
     
+};
+
+exports.getPostPerPage = async(req, res) => {
+    if(res.locals.user && res.locals.admin) {
+        Post.findAll({}).then(async(posts) => {
+            if(posts) {
+                posts = PostMiddleware.getPostForPage(req.body.page || 0, posts)
+                const PostsCats = await PostMiddleware.getCategoriesForPosts(posts);
+                res.status(200).send(PostsCats)
+            }
+            else {
+                res.status(404).send("posts not found")
+            }
+        });
+    }
+    else {
+        Post.findAll({where: {status: "active"}}).then(async(posts) => {
+            if(posts) {
+                posts = PostMiddleware.getPostForPage(req.body.page || 0, posts)
+                const PostsCats = await PostMiddleware.getCategoriesForPosts(posts);
+                res.status(200).send(PostsCats)
+            }
+            else {
+                res.status(404).send("posts not found")
+            }
+        });
+    }
 };

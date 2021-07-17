@@ -20,8 +20,33 @@ exports.addCategory = async(CategroyJson, postID) => {
     });
 };
 
-exports.getCategoriesForPost = async(postID) => {
-    return await Category_sub_table.findAll({where: {post_id: postID}})
+exports.getCategoriesForPosts = async(posts) => {
+
+    let res = [];
+    let posts_id = [];
+    for(const post of posts) {
+        posts_id.push(post.id);
+    }
+
+    categories = await Category_sub_table.findAll({where: 
+        {post_id:  {
+                [Op.or]: posts_id
+            }
+        }
+    });
+
+    for(const post of posts) {
+        let temp = [];
+        temp.push(post);
+        for(const cat of categories) {
+            if(cat.post_id == post.id)
+                temp.push(cat);
+        }
+        res.push(temp);
+    }
+
+    return res;
+
 };
 
 exports.getPostForPage = (page, posts) => {

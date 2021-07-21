@@ -1,6 +1,6 @@
 const Validator  = require('fastest-validator');
 const db = require('../models');
-const ratingChange = require('../middleware/ratingChange');
+const ratingChangeMiddleware = require('../middleware/ratingChangeMiddleware');
 const Likes = db.Likes
 
 exports.getLike = async(req, res) => {
@@ -95,9 +95,9 @@ exports.createLike = async(req, res) => {
         });
 
         if(data.type.localeCompare('like') == 0) 
-            ratingChange.Change(data.post_id, data.comment_id, 1);
+            ratingChangeMiddleware.Change(data.post_id, data.comment_id, 1);
         else
-            ratingChange.Change(data.post_id, data.comment_id, -1);
+            ratingChangeMiddleware.Change(data.post_id, data.comment_id, -1);
         
     }
     else if (data.type.localeCompare(like.type) != 0) {
@@ -107,9 +107,9 @@ exports.createLike = async(req, res) => {
         });
 
         if(data.type.localeCompare('like') == 0) 
-            ratingChange.Change(data.post_id, data.comment_id, 2);
+            ratingChangeMiddleware.Change(data.post_id, data.comment_id, 2);
         else
-            ratingChange.Change(data.post_id, data.comment_id, -2);
+            ratingChangeMiddleware.Change(data.post_id, data.comment_id, -2);
     }
     else {
         res.status(400).send("error")

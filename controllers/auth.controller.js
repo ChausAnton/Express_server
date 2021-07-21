@@ -2,8 +2,11 @@ require('dotenv').config()
 const Validator  = require('fastest-validator');
 const { Op } = require("sequelize");
 const jwt = require('jsonwebtoken');
-var bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 const db = require('../models');
+const crypto = require("crypto");
+const sendEmailMiddleware = require('../middleware/sendEmailMiddleware');
+const { send } = require('process');
 const User = db.User;
 
 exports.signUp = async(req, res) => {
@@ -103,3 +106,57 @@ exports.logout = async(req, res) => {
         res.status(200).send('success')
     }
 };
+
+exports.requestForPasswordReset = async(req, res) => {
+    const user = await User.findOne({where: { email: req.body.email}})
+    if(user) {
+        let resetToken = crypto.randomBytes(32).toString("hex");
+        const hash = await bcrypt.hash(resetToken, Number(process.env.SECRET));
+        const link = `${process.env.URL}/auth/resetPassword?token=${resetToken}&id=${user.id}`;
+        let resEmail = await sendEmailMiddleware.sendEmail(user.email, "Password Reset Request", {name: user.real_name, link: link,}, "../template/requestResetPassword.handlebars");
+        User.update({password_reset_token: resetToken}, {where: {id: user.id}});
+        if(resEmail == true) {
+            res.status(200).send("email sended");
+        }
+        else {
+            res.status(418).send(resEmail);
+        }
+    }
+    else {
+        res.status(404).send("user not found")
+    }
+}
+
+exports.resetPassword = async(req, res) => {
+    let user = await User.findOne({where:{id: req.param('id')}});
+
+    if(user.password_reset_token.localeCompare(req.param('token')) == 0) {
+        const schema = {
+            password: { type: "string", min: 3 },
+            passwordConfirmation: { type: "equal", field: "password" },
+        }
+
+        let data = {
+            password: req.body.password,
+            passwordConfirmation: req.body.passwordConfirmation,
+        }
+
+        const v = new Validator();
+        const validationresponse = v.validate(data, schema);
+        if(validationresponse !== true) {
+            return res.status(400).json({
+                message: "Validation fail",
+                errors: validationresponse
+            });
+        }
+
+        data.password = bcrypt.hashSync(req.body.password, 8)
+        res.cookie('jwt', '', {maxAge: 1});
+
+        User.update({password_reset_token: null, token: null, password: data.password}, {where: {id:  req.param('id')}});
+        res.status(200).send("password reseted")
+    }
+    else {
+        res.stauts().send("reset token not matched")
+    }
+}

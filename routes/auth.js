@@ -9,4 +9,8 @@ router.post('/signUp', auth.signUp);
 
 router.post('/logout', auth.logout)
 
+router.get('/resetPassword', auth.resetPassword)
+
+router.get('/requestForPasswordReset', auth.requestForPasswordReset)
+
 export default router;

@@ -12,6 +12,15 @@ app.use(morgan('combined'));
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({extended: true, limit: '50mb'}));
 
+//static files
+app.use(express.static('public'));
+app.use('/css', express.static('public/css', {root: '.'}))
+app.use('/js', express.static('public/js', {root: '.'}))
+app.use('/img', express.static('public/img', {root: '.'}))
+
+app.set('veiws', {root: '.'})
+app.set('view engine', 'ejs')
+
 app.use('*', checkUser)
 app.use('/user', routes.user);
 app.use('/auth', routes.auth);

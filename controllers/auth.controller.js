@@ -112,7 +112,7 @@ exports.requestForPasswordReset = async(req, res) => {
     if(user) {
         let resetToken = crypto.randomBytes(32).toString("hex");
         const hash = await bcrypt.hash(resetToken, Number(process.env.SECRET));
-        const link = `${process.env.URL}/auth/resetPassword?token=${resetToken}&id=${user.id}`;
+        const link = `${process.env.URL}/auth/PasswordReset?token=${resetToken}&id=${user.id}`;
         let resEmail = await sendEmailMiddleware.sendEmail(user.email, "Password Reset Request", {name: user.real_name, link: link,}, "../template/requestResetPassword.handlebars");
         User.update({password_reset_token: resetToken}, {where: {id: user.id}});
         if(resEmail == true) {
@@ -157,6 +157,6 @@ exports.resetPassword = async(req, res) => {
         res.status(200).send("password reseted")
     }
     else {
-        res.stauts().send("reset token not matched")
+        res.stauts(403).send("reset token not matched")
     }
 }

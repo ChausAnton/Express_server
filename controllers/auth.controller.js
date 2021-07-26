@@ -17,7 +17,7 @@ exports.signUp = async(req, res) => {
         ]
     }}).then(user => {
         if(user.length) {
-            return res.status(400).send("User already exist");
+            return res.status(400).send({message: "User already exist"});
         }
         const schema = {
             login: {type: "string", option: false, max: "100"},
@@ -25,13 +25,15 @@ exports.signUp = async(req, res) => {
             email: {type: "email"},
             password: { type: "string", min: 3 },
             passwordConfirmation: { type: "equal", field: "password" },
-            role: { type: "string", enum: [ "user", "admin" ] },
+            role: { type: "string", enum: [ "user", "admin" ], optional: true, default: 'user'},
         }
 
-        if (req.body.role.localeCompare('admin') == 0) {
-            console.log("ok")
-            if(!res.locals.admin) {
-                return res.status(401).send("Only admin can create admin")
+        if(req.body.role) {
+            if (req.body.role.localeCompare('admin') == 0) {
+                console.log("ok")
+                if(!res.locals.admin) {
+                    return res.status(401).send("Only admin can create admin")
+                }
             }
         }
     
@@ -65,6 +67,7 @@ exports.signUp = async(req, res) => {
 }
 
 exports.signIn = async(req, res) => {
+    console.log(req.body);
     User.findOne({where: {login: req.body.login}}).then(user => {
         if(!user) {
             return res.status(404).send({message: "User not found"});

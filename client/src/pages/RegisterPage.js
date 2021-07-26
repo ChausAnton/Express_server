@@ -16,6 +16,10 @@ export const RegisterPage = () => {
         clearError();
     }, [error, message, clearError]);
 
+    useEffect( () => {
+        window.M.updateTextFields()
+    }, []);
+
     const chengeHandler = event => {
         setForm({...form, [event.target.name]: event.target.value})
     };

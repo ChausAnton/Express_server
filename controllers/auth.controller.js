@@ -67,7 +67,6 @@ exports.signUp = async(req, res) => {
 }
 
 exports.signIn = async(req, res) => {
-    console.log(req.body);
     User.findOne({where: {login: req.body.login}}).then(user => {
         if(!user) {
             return res.status(404).send({message: "User not found"});

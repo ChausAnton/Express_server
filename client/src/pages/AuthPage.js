@@ -1,8 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
+import { AuthContext } from '../context/AuthContext';
 import { useHttp } from '../hooks/http.hook';
 import { useMessage } from '../hooks/message.hook';
 
 export const AuthPage = () => {
+    const auth = useContext(AuthContext);
+    console.log(auth)
+
     const message = useMessage();
 
     const {loading, error, request, clearError} = useHttp()
@@ -16,6 +20,10 @@ export const AuthPage = () => {
         clearError();
     }, [error, message, clearError]);
 
+    useEffect( () => {
+        window.M.updateTextFields()
+    }, []);
+
     const chengeHandler = event => {
         setForm({...form, [event.target.name]: event.target.value})
     };
@@ -23,7 +31,7 @@ export const AuthPage = () => {
     const loginHandler = async() => {
         try {
             const data = await request('/auth/signIn', 'POST', {...form})
-            console.log('data:', data);
+            auth.login(data.accessToken, data.id);
         }
         catch (e) {}
     };

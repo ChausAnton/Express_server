@@ -2,10 +2,10 @@ import React, {useContext, useEffect, useState} from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useHttp } from '../hooks/http.hook';
 import { useMessage } from '../hooks/message.hook';
+import { useHistory } from "react-router-dom";
 
 export const AuthPage = () => {
     const auth = useContext(AuthContext);
-    console.log(auth)
 
     const message = useMessage();
 
@@ -36,6 +36,17 @@ export const AuthPage = () => {
         catch (e) {}
     };
 
+    const history = useHistory();
+    const signUpHandler = event => {
+        event.preventDefault();
+        history.push('/register')
+    };
+
+    const passwordResetHandler = event => {
+        event.preventDefault();
+        history.push('/forgotPassword')
+        //const data = await request('/auth/requestForPasswordReset', 'GET', {email: ""})
+    };
 
     return (
         <div>
@@ -74,7 +85,8 @@ export const AuthPage = () => {
                         sign in
                     </button>
 
-                    <a className="btn grey lighten-1" href="/register" disabled={loading}>sign up</a>
+                    <button className="btn grey lighten-1" onClick={signUpHandler} disabled={loading}>sign up</button><br/>
+                    <a className="waves-effect waves-teal btn-flat lighten-1" onClick={passwordResetHandler} disabled={loading} href="/">Forgot your password ?</a>
                 </div>
             </div>
         </div>

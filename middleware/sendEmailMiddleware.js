@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 
 
-exports.sendEmail = async(email, subject, payload, template) => {
+exports.sendEmail = async(email, subject, payload, template, res) => {
         const transporter = nodemailer.createTransport({
             host: process.env.MAIL_HOST,
             port: 465,
@@ -25,11 +25,11 @@ exports.sendEmail = async(email, subject, payload, template) => {
             html: compiledTemplate(payload),
         };
 
-        await transporter.sendMail(options, (err, info) => {
+        transporter.sendMail(options, (err, info) => {
             if (err) {
-                return err;
+                res.status(503).send(err);
             } else {
-                return true
+                res.status(200).send({message: "email sended"});
             }
         });
 };

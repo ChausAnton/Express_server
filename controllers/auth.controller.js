@@ -114,25 +114,27 @@ exports.requestForPasswordReset = async(req, res) => {
     if(user) {
         let resetToken = crypto.randomBytes(32).toString("hex");
         const hash = await bcrypt.hash(resetToken, Number(process.env.SECRET));
-        const link = `${process.env.URL}/auth/PasswordReset?token=${resetToken}&id=${user.id}`;
-        let resEmail = await sendEmailMiddleware.sendEmail(user.email, "Password Reset Request", {name: user.real_name, link: link,}, "../template/requestResetPassword.handlebars");
+        const link = `${process.env.CLIENTURL}/resetPassword/${resetToken}/${user.id}`;
         User.update({password_reset_token: resetToken}, {where: {id: user.id}});
-        if(resEmail == true) {
-            res.status(200).send("email sended");
-        }
-        else {
-            res.status(418).send(resEmail);
-        }
+
+        sendEmailMiddleware.sendEmail(user.email, 
+        "Password Reset Request", 
+        {name: user.real_name, link: link,}, 
+        "../template/requestResetPassword.handlebars", res);
     }
     else {
-        res.status(404).send("user not found")
+        res.status(404).send({message: "user not found"});
     }
 }
 
 exports.resetPassword = async(req, res) => {
     let user = await User.findOne({where:{id: req.param('id')}});
 
-    if(user.password_reset_token.localeCompare(req.param('token')) == 0) {
+    if(!user) {
+        return res.stauts(403).send({message: "user not found"})
+    }
+
+    if(user.password_reset_token && user.password_reset_token.localeCompare(req.param('token')) == 0) {
         const schema = {
             password: { type: "string", min: 3 },
             passwordConfirmation: { type: "equal", field: "password" },
@@ -156,9 +158,9 @@ exports.resetPassword = async(req, res) => {
         res.cookie('jwt', '', {maxAge: 1});
 
         User.update({password_reset_token: null, token: null, password: data.password}, {where: {id:  req.param('id')}});
-        res.status(200).send("password reseted")
+        res.status(200).send({message: "password reseted"})
     }
     else {
-        res.stauts(403).send("reset token not matched")
+        res.status(403).send({message: "reset token not matched"})
     }
 }

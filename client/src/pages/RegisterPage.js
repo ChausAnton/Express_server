@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { useHttp } from '../hooks/http.hook';
 import { useMessage } from '../hooks/message.hook';
+import { useHistory } from "react-router-dom";
 
 export const RegisterPage = () => {
     const message = useMessage();
@@ -30,6 +31,12 @@ export const RegisterPage = () => {
             console.log('data:', data);
         }
         catch (e) {}
+    };
+
+    const history = useHistory();
+    const signInHandler = event => {
+        event.preventDefault();
+        history.push('/')
     };
 
     return (
@@ -96,7 +103,7 @@ export const RegisterPage = () => {
                         </div>
                 </div>
                 <div className="card-action">
-                    <a className="btn yellow darken-4 regButtonMargin" href="/" disabled={loading}>sign in</a>
+                    <button className="btn yellow darken-4 regButtonMargin" onClick={signInHandler} disabled={loading}>sign in</button>
                     
                     <button className="btn grey lighten-1"
                         onClick={registerHandler}

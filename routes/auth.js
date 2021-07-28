@@ -11,12 +11,8 @@ router.post('/signUp', auth.signUp);
 
 router.post('/logout', auth.logout)
 
-router.post('/resetPassword', auth.resetPassword)
+router.post('/resetPassword/:token/:id', auth.resetPassword)
 
-router.get('/requestForPasswordReset', auth.requestForPasswordReset)
-
-router.get('/PasswordReset', async(req, res) => {
-    res.render('resetPassword', {token: req.param('token') ,userid: req.param('id')});
-});
+router.post('/requestForPasswordReset', auth.requestForPasswordReset)
 
 export default router;

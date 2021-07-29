@@ -9,11 +9,8 @@ exports.getPost = async(req, res) => {
     if(res.locals.user && res.locals.admin) {
         Post.findOne({where: {id: req.params.id}}).then(async(post) => {
             if(post) {
-                categories = await PostMiddleware.getCategoriesForPost(post.id);
-                res.status(200).send([
-                    post,
-                    categories
-                ]);
+                const postCategories = await PostMiddleware.getCategoriesForPost(post);
+                res.status(200).send(postCategories);
             }
             else {
                 res.status(404).send("post not found");
@@ -23,11 +20,8 @@ exports.getPost = async(req, res) => {
     else {
         Post.findOne({where: {id: req.params.id, status: "active"}}).then(async(post) => {
             if(post) {
-                categories = await PostMiddleware.getCategoriesForPost(post.id);
-                res.status(200).send([
-                    post,
-                    categories
-                ]);
+                const postCategories = await PostMiddleware.getCategoriesForPost(post);
+                res.status(200).send(postCategories);
             }
             else {
                 res.status(404).send("post not found");

@@ -20,6 +20,20 @@ exports.addCategory = async(CategroyJson, postID) => {
     });
 };
 
+exports.getCategoriesForPost = async(post) => {
+    let res = [];
+
+    categories = await Category_sub_table.findAll({where: 
+        {post_id: post.id}
+    });
+
+    res.push(post)
+    res.push(categories)
+
+    return res;
+
+}
+
 exports.getCategoriesForPosts = async(posts) => {
 
     let res = [];

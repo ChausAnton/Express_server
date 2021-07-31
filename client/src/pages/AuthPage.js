@@ -45,7 +45,6 @@ export const AuthPage = () => {
     const passwordResetHandler = event => {
         event.preventDefault();
         history.push('/forgotPassword')
-        //const data = await request('/auth/requestForPasswordReset', 'GET', {email: ""})
     };
 
     return (

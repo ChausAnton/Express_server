@@ -2,6 +2,7 @@ import express from 'express';
 import routes from '../routes';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import router from '../routes/image';
 
 const { checkUser } = require('../middleware/authMiddleware.js')
 
@@ -23,6 +24,7 @@ app.set('veiws', {root: '.'})
 app.set('view engine', 'ejs')
 
 app.use('*', checkUser)
+app.use('/image', routes.image)
 app.use('/user', routes.user);
 app.use('/auth', routes.auth);
 app.use('/post', routes.post);

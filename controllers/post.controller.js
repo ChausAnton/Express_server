@@ -5,6 +5,10 @@ const Post = db.Post
 const sequelize = db.sequelize
 const { Op } = require("sequelize");
 
+exports.getPostDetail = async(req, res) => {
+    
+}
+
 exports.getPost = async(req, res) => {
     if(res.locals.user && res.locals.admin) {
         Post.findOne({where: {id: req.params.id}}).then(async(post) => {
@@ -90,7 +94,7 @@ exports.createPost = async(req, res) => {
         
     }
     else {
-        res.status(403).send("only logged users can create posts");
+        res.status(403).send({message: "only logged users can create posts"});
     }
 }
 

@@ -4,6 +4,7 @@ import post from './post';
 import comment from './comment';
 import category from './category';
 import like from './like';
+import image from './image'
 
 
 export default {
@@ -12,7 +13,8 @@ export default {
     post,
     comment,
     category,
-    like
+    like,
+    image
 };
 
 

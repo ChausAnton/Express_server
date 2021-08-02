@@ -14,11 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Comments.init({
-    author_id: DataTypes.INTEGER,
-    post_id: DataTypes.INTEGER,
-    content: DataTypes.STRING,
-    likes: DataTypes.INTEGER,
-    status: DataTypes.ENUM('active', 'inactive')
+    author_id_comment: DataTypes.INTEGER,
+    post_id_comment: DataTypes.INTEGER,
+    content_comment: DataTypes.STRING,
+    likes_comment: DataTypes.INTEGER,
+    status_comment: DataTypes.ENUM('active', 'inactive')
   }, {
     sequelize,
     modelName: 'Comments',

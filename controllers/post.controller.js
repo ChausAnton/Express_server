@@ -6,7 +6,60 @@ const sequelize = db.sequelize
 const { Op } = require("sequelize");
 
 exports.getPostDetail = async(req, res) => {
+    const result = await db.sequelize.query("select * from Category_sub_tables inner join Categories on Category_sub_tables.category_id = Categories.id inner join posts on Category_sub_tables.post_id = posts.id inner join comments on posts.id = comments.post_id_comment inner join users on posts.author_id = users.id where posts.id = " + req.params.id + " ORDER BY Category_sub_tables.category_id ASC;", { type: db.sequelize.QueryTypes.SELECT })
+    let data = {
+        Post_data: {
+            post_id: result[0].post_id,
+            title: result[0].title,
+            content: result[0].content,
+            likes: result[0].likes,
+            status: result[0].status,
+        },
+
+        Author_data: {
+            author_id: result[0].author_id,
+            login: result[0].login,
+            real_name: result[0].real_name,
+            email: result[0].email,
+            rating: result[0].rating,
+            image_path: result[0].image_path,
+            role: result[0].role,
+        },
+
+        Categories_data: [],
+
+        Comments_data: [],
+
+        createdAt: result[0].createdAt,
+        updatedAt: result[0].updatedAt,
+    };
+
+    let comments = [];
+    let categories = [];
+    for(const iter of result) {
+        comments.push(JSON.stringify({
+            author_id_comment: iter.author_id_comment, 
+            post_id_comment: iter.post_id_comment, 
+            content_comment: iter.content_comment, 
+            likes_comment: iter.likes_comment, 
+            likes_comment: iter.likes_comment
+        }))
+
+        categories.push(JSON.stringify({
+            category_title: iter.category_title, 
+            category_description: iter.description, 
+            category_id: iter.category_id
+        }))
+    }
+    data.Categories_data = [...new Set(categories)].map((category) => {
+        return JSON.parse(category)
+    });
     
+    data.Comments_data = [...new Set(comments)].map((comment) => {
+        return JSON.parse(comment)
+    });;
+
+    res.status(200).send(data)
 }
 
 exports.getPost = async(req, res) => {

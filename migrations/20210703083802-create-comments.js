@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      author_id: {
+      author_id_comment: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
@@ -17,7 +17,7 @@ module.exports = {
           key: 'id',
         }
       },
-      post_id: {
+      post_id_comment: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
@@ -26,13 +26,13 @@ module.exports = {
           key: 'id',
         }
       },
-      content: {
+      content_comment: {
         type: Sequelize.STRING
       },
-      likes: {
+      likes_comment: {
         type: Sequelize.INTEGER
       },
-      status: {
+      status_comment: {
         type: Sequelize.ENUM('active', 'inactive')
       },
       createdAt: {

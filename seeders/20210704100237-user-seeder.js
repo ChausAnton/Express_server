@@ -10,7 +10,7 @@ module.exports = {
         email: '11@gmail.com',
         password: bcrypt.hashSync('1111', 8),
         rating: '0',
-        image_path: 'some default path',
+        image_path: 'User.png',
         role: 'admin'
       },
       {
@@ -19,7 +19,7 @@ module.exports = {
         email: '22@gmail.com',
         password: bcrypt.hashSync('1111', 8),
         rating: '0',
-        image_path: 'some default path',
+        image_path: 'User.png',
         role: 'user'
       },
       {
@@ -28,7 +28,7 @@ module.exports = {
         email: '33@gmail.com',
         password: bcrypt.hashSync('1111', 8),
         rating: '0',
-        image_path: 'some default path',
+        image_path: 'User.png',
         role: 'user'
       },
       {
@@ -37,7 +37,7 @@ module.exports = {
         email: '44@gmail.com',
         password: bcrypt.hashSync('1111', 8),
         rating: '0',
-        image_path: 'some default path',
+        image_path: 'User.png',
         role: 'user'
       }
     ]);

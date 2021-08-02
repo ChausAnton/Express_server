@@ -14,7 +14,7 @@ exports.getComment = async(req, res) => {
         });
     }
     else {
-        Comment.findOne({where: {id: req.params.id, status: "active"}}).then((comment) => {
+        Comment.findOne({where: {id: req.params.id, status_comment: "active"}}).then((comment) => {
             if(comment) {
                 res.status(200).send(comment);
             }
@@ -37,7 +37,7 @@ exports.getComments = async(req, res) => {
         });
     }
     else {
-        Comment.findAll({where: {status: "active"}}).then((comments) => {
+        Comment.findAll({where: {status_comment: "active"}}).then((comments) => {
             if(comments) {
                 res.status(200).send(comments)
             }
@@ -52,15 +52,15 @@ exports.getComments = async(req, res) => {
 exports.createComment = async(req, res) => {
     if(res.locals.user) {
         const schema = {
-            post_id: {type: "number"},
-            content: {type: "string"},
+            post_id_comment: {type: "number"},
+            content_comment: {type: "string"},
         };
 
         let data = {
-            post_id: req.body.post_id,
-            author_id: res.locals.user.id,
-            content: req.body.content,
-            likes: 0,
+            post_id_comment: req.body.post_id_comment,
+            author_id_comment: res.locals.user.id,
+            content_comment: req.body.content_comment,
+            likes_comment: 0,
             status: "active",
         };
 
@@ -83,13 +83,13 @@ exports.createComment = async(req, res) => {
 
 exports.updateComment = async(req, res) => {
     const schema = {
-        status: { type: "string", optional: true, enum: [ "active", "inactive" ] },
-        content: {type: "string", optional: true}
+        status_comment: { type: "string", optional: true, enum: [ "active", "inactive" ] },
+        content_comment: {type: "string", optional: true}
     }
 
     let data = {
-        status: req.body.status,
-        content: req.body.content
+        status_comment: req.body.status_comment,
+        content_comment: req.body.content_comment
     }
 
     const v = new Validator();
@@ -103,13 +103,13 @@ exports.updateComment = async(req, res) => {
 
     let comment = await Comment.findOne({where: {id: req.params.id}})
 
-    if(res.locals.admin && req.body.status) {
+    if(res.locals.admin && req.body.status_comment) {
 
-        Comment.update({status: req.body.status}, {where: {id: req.params.id}});
+        Comment.update({status_comment: req.body.status_comment}, {where: {id: req.params.id}});
     }
     
-    if(res.locals.user && (req.body.title || req.body.content) && comment && comment.author_id == res.locals.user.id) {
-        Comment.update({title: req.body.title, content: req.body.content}, {where: {id: req.params.id}})
+    if(res.locals.user && (req.body.title_comment || req.body.content_comment) && comment && comment.author_id_comment == res.locals.user.id) {
+        Comment.update({title_comment: req.body.title, content_comment: req.body.content_comment}, {where: {id: req.params.id}})
     }
 
     if(!res.locals.admin && !res.locals.user)
@@ -121,7 +121,7 @@ exports.updateComment = async(req, res) => {
 exports.deleteComment = async(req, res) => {
     let comment = await Comment.findOne({where: {id: req.params.id}})
 
-    if(!res.locals.admin && (!res.locals.user || (comment.author_id != res.locals.user.id))) {
+    if(!res.locals.admin && (!res.locals.user || (comment.author_id_comment != res.locals.user.id))) {
         return res.status(401).send("Only andmin and author can delete comment");
     }
     Comment.destroy({where: {id: req.params.id}}).then(() => {

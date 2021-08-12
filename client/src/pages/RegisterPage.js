@@ -50,7 +50,7 @@ export const RegisterPage = () => {
                                     id="email" 
                                     type="text" 
                                     name="email" 
-                                    className="yellow-input" 
+                                    className="yellow-input white-text" 
                                     onChange={chengeHandler} 
                                     />
 
@@ -61,7 +61,7 @@ export const RegisterPage = () => {
                                     id="login" 
                                     type="text" 
                                     name="login" 
-                                    className="yellow-input" 
+                                    className="yellow-input white-text" 
                                     onChange={chengeHandler} 
                                     />
 
@@ -72,7 +72,7 @@ export const RegisterPage = () => {
                                     id="real_name" 
                                     type="text" 
                                     name="real_name" 
-                                    className="yellow-input" 
+                                    className="yellow-input white-text" 
                                     onChange={chengeHandler} 
                                     />
 
@@ -83,7 +83,7 @@ export const RegisterPage = () => {
                                     id="password" 
                                     type="password" 
                                     name="password" 
-                                    className="yellow-input" 
+                                    className="yellow-input white-text" 
                                     onChange={chengeHandler} 
                                     />
 
@@ -94,7 +94,7 @@ export const RegisterPage = () => {
                                     id="passwordConfirmation" 
                                     type="password" 
                                     name="passwordConfirmation" 
-                                    className="yellow-input" 
+                                    className="yellow-input white-text" 
                                     onChange={chengeHandler} 
                                     />
 

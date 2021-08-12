@@ -49,7 +49,7 @@ export const ResetPassword = () => {
                                     id="password" 
                                     type="password" 
                                     name="password" 
-                                    className="yellow-input" 
+                                    className="yellow-input white-text" 
                                     onChange={chengeHandler} 
                                     />
 
@@ -60,7 +60,7 @@ export const ResetPassword = () => {
                                     id="passwordConfirmation" 
                                     type="password" 
                                     name="passwordConfirmation" 
-                                    className="yellow-input" 
+                                    className="yellow-input white-text" 
                                     onChange={chengeHandler} 
                                     />
 

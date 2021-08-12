@@ -13,7 +13,7 @@ input.yellow-input + label{
     color: #ffffff!important;
 }
 
-input.yellow-input:focus + label {
+input.yellow-input:focus {
     color: #ffeb3b!important;
 }
 
@@ -25,3 +25,8 @@ input.yellow-input:focus {
 .padingInNavbar {
     padding: 0 2rem;
 }
+
+.categories {
+    font-size: smaller;
+}
+

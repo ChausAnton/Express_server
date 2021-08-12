@@ -58,7 +58,7 @@ export const AuthPage = () => {
                                     id="login" 
                                     type="text" 
                                     name="login" 
-                                    className="yellow-input" 
+                                    className="yellow-input white-text" 
                                     onChange={chengeHandler} />
 
                                 <label htmlFor="login">login</label>
@@ -68,7 +68,7 @@ export const AuthPage = () => {
                                     id="password" 
                                     type="password" 
                                     name="password" 
-                                    className="yellow-input" 
+                                    className="yellow-input white-text" 
                                     onChange={chengeHandler} />
 
                                 <label htmlFor="password">password</label>

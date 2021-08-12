@@ -117,9 +117,9 @@ exports.getPosts = async(req, res) => {
 exports.createPost = async(req, res) => {
     if(res.locals.user) {
         const schema = {
-            title: {type: "string"},
-            content: {type: "string"},
-            category_id: {type: "object"}
+            title: {type: "string", empty: false},
+            content: {type: "string", empty: false},
+            category_id: {type: "object", empty: false}
         };
 
         let data = {
@@ -131,6 +131,7 @@ exports.createPost = async(req, res) => {
             status: "active",
         };
 
+        console.log(data)
         const v = new Validator();
         const validationresponse = v.validate(data, schema);
         if(validationresponse !== true) {

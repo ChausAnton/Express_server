@@ -9,13 +9,13 @@ import { PostDetail } from '../components/PostDetail';
 export const DetailPage = () => {
     const {id} = useParams();
 
-    const [post, setPost] = useState([]);
+    const [post, setPost] = useState();
     const {loading, request} = useHttp();
     const {token} = useContext(AuthContext);
 
     const fetchPost = useCallback(async() => {
         try {
-            const fetched = await request('/post/getPost/' + id, 'GET', null, {
+            const fetched = await request('/post/getPostDetail/' + id, 'GET', null, {
                 'x-access-token': token
             })
             setPost(fetched)
@@ -27,10 +27,10 @@ export const DetailPage = () => {
         fetchPost();
     }, [fetchPost]);
 
-    
     if(loading) {
         return <Loader />
     }
+    
     return (
         <>
             {!loading && <PostDetail post={post}/>}

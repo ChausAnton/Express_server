@@ -5,7 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useHttp } from '../hooks/http.hook';
 
 export const ProfilePage = () => {
-    const [user, setUser] = useState([]);
+    const [user, setUser] = useState();
     const {loading, request} = useHttp();
     const {userId} = useContext(AuthContext);
 

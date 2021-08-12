@@ -52,7 +52,7 @@ export const ForgotPassword = () => {
                                     id="email" 
                                     type="text" 
                                     name="email" 
-                                    className="yellow-input" 
+                                    className="yellow-input white-text" 
                                     onChange={chengeHandler} 
                                     />
 

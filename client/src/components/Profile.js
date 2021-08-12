@@ -17,12 +17,12 @@ export const Profile = ({user}) => {
                     <img src={PrifileImage} alt="problem"/>
                 </div>
                 <div className="card-content blue darken-2">
-                    <span className="card-title">{user.login}</span>
+                    <span className="card-title white-text">{user.login}</span>
                     <div className="row">
-                        <div className="col s12">{user.real_name}</div>
-                        <div className="col s12">{user.email}</div>
-                        <div className="col s12">{user.role}</div>
-                        <div className="col s12">{user.rating}</div>
+                        <div className="col s12 white-text">{user.real_name}</div>
+                        <div className="col s12 white-text">{user.email}</div>
+                        <div className="col s12 white-text">{user.role}</div>
+                        <div className="col s12 white-text">{user.rating}</div>
                     </div>
                 </div>
                 <div className="card-action">

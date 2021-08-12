@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { useHttp } from '../hooks/http.hook';
 import { useMessage } from '../hooks/message.hook';
+import Select from 'react-select';
+
 
 export const CreatePage = () => {
     const history = useHistory();
@@ -12,7 +14,7 @@ export const CreatePage = () => {
     const {loading, error, request, clearError} = useHttp()
 
     const [form, setForm] = useState ( {
-        email: '', login: '', real_name: '', password: '', passwordConfirmation: ''
+        title: '', content: '', category_id: {}
     });
 
     useEffect( () => {
@@ -25,19 +27,58 @@ export const CreatePage = () => {
     }, []);
 
     const chengeHandler = event => {
-        setForm({...form, [event.target.name]: event.target.value})
+        if(event.target)
+            setForm({...form, [event.target.name]: event.target.value})
+        else {
+            form.category_id = Object.fromEntries(event.map((category, index) => {
+                return [index, category.value]
+            }))
+        }
     };
 
     const PostHandler = async(event) => {
         try {
             event.preventDefault();
-            form.category_id = JSON.parse(form.category_id)
             const data = await request('/post/createPost', 'POST', {...form}, {'x-access-token': token})
-            console.log(data)
             history.push('/')
         }
         catch (e) {}
     };
+
+    const options = JSON.parse(sessionStorage.getItem('categories')).map((category) => {
+            return {value: category.id, label: category.category_title}
+    })
+
+    const SelectStyle = {
+        option: (provided) => ({
+            ...provided,
+            color: '#000000',
+            padding: 10,
+        }),
+        valueContainer: base => ({
+            ...base,
+            color: 'white',
+        }),
+
+        multiValueLabel: base => ({
+            ...base,
+            backgroundColor: "#1976d2",
+            color: "#FFFFFF"
+        }),
+        multiValueRemove: base => ({
+            ...base,
+            color: "#000000"
+        }),
+        control: (base, state) => ({
+            ...base,
+            boxShadow: "none",
+            border: `2px solid ${state.isFocused ? "#ffeb3b" : "#1976d2"}`,
+            '&:hover': {
+                border: `2px solid ${state.isFocused ? "#ffeb3b" : "#1976d2"}`
+            }
+        })
+    }
+
 
     return (
         <div>
@@ -45,12 +86,12 @@ export const CreatePage = () => {
                 <div className="card-content white-text">
                     <span className="card-title">Create Post</span>
                         <div>
-                        <div className="input-field">
+                            <div className="input-field">
                                 <input placeholder="input title" 
                                     id="title" 
                                     type="text" 
                                     name="title" 
-                                    className="yellow-input" 
+                                    className="yellow-input white-text" 
                                     onChange={chengeHandler} 
                                     />
 
@@ -61,22 +102,24 @@ export const CreatePage = () => {
                                     id="content" 
                                     type="text" 
                                     name="content" 
-                                    className="yellow-input" 
+                                    className="yellow-input white-text" 
                                     onChange={chengeHandler} 
                                     />
 
                                 <label htmlFor="content">content</label>
                             </div>
                             <div className="input-field">
-                                <input placeholder="input category_id" 
-                                    id="category_id" 
-                                    type="text" 
-                                    name="category_id" 
-                                    className="yellow-input" 
-                                    onChange={chengeHandler} 
-                                    />
-
-                                <label htmlFor="category_id">category_id</label>
+                                <p className="categories">Categories</p>
+                                <Select options={options}
+                                placeholder={"Select categories"}
+                                closeMenuOnSelect={false}
+                                isMulti 
+                                id="categories" 
+                                name="categories" 
+                                styles={SelectStyle}
+                                onChange={chengeHandler}
+                                />
+                                <label htmlFor="categories" hidden>categories</label>
                             </div>
                         </div>
                 </div>

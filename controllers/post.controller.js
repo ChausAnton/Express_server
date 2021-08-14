@@ -6,7 +6,7 @@ const sequelize = db.sequelize
 const { Op } = require("sequelize");
 
 exports.getPostDetail = async(req, res) => {
-    const result = await db.sequelize.query("select * from Category_sub_tables inner join Categories on Category_sub_tables.category_id = Categories.id inner join posts on Category_sub_tables.post_id = posts.id inner join comments on posts.id = comments.post_id_comment inner join users on posts.author_id = users.id where posts.id = " + req.params.id + " ORDER BY Category_sub_tables.category_id ASC;", { type: db.sequelize.QueryTypes.SELECT })
+    const result = await db.sequelize.query("select * from Category_sub_tables inner join Categories on Category_sub_tables.category_id = Categories.id inner join posts on Category_sub_tables.post_id = posts.id left join comments on posts.id = comments.post_id_comment inner join users on posts.author_id = users.id where posts.id = " + req.params.id + " ORDER BY Category_sub_tables.category_id ASC;", { type: db.sequelize.QueryTypes.SELECT });
     let data = {
         Post_data: {
             post_id: result[0].post_id,
@@ -297,28 +297,24 @@ exports.getPostCategoryFilter = async(req, res) => {
 };
 
 exports.getPostPerPage = async(req, res) => {
-    if(res.locals.user && res.locals.admin) {
-        Post.findAll({}).then(async(posts) => {
-            if(posts) {
-                posts = PostMiddleware.getPostForPage(req.body.page || 0, posts)
-                const PostsCats = await PostMiddleware.getCategoriesForPosts(posts);
-                res.status(200).send(PostsCats)
-            }
-            else {
-                res.status(404).send("posts not found")
-            }
-        });
+    const postsPerPage = 2
+
+    if(res.locals.user && res.locals.admin && req.params.page > 0) {
+        const posts = await db.sequelize.query(`select * from posts limit ${(req.params.page - 1) * postsPerPage}, ${postsPerPage};` , { type: db.sequelize.QueryTypes.SELECT });
+        const count = await db.sequelize.query(`select count(*) from posts;`, { type: db.sequelize.QueryTypes.SELECT });
+        if(!posts || !count)
+            res.status(404).send("posts not found")
+        else 
+            res.status(200).send({posts: [...posts], postsCount: count[0]['count(*)']})
     }
-    else {
-        Post.findAll({where: {status: "active"}}).then(async(posts) => {
-            if(posts) {
-                posts = PostMiddleware.getPostForPage(req.body.page || 0, posts)
-                const PostsCats = await PostMiddleware.getCategoriesForPosts(posts);
-                res.status(200).send(PostsCats)
-            }
-            else {
-                res.status(404).send("posts not found")
-            }
-        });
+    else if (req.params.page > 0) {
+        const posts = await db.sequelize.query(`select * from posts where status = 'active' limit ${(req.params.page - 1) * postsPerPage}, ${postsPerPage};` , { type: db.sequelize.QueryTypes.SELECT });
+        const count = await db.sequelize.query(`select count(*) from posts where status = 'active';`, { type: db.sequelize.QueryTypes.SELECT });
+        if(!posts || !count)
+            res.status(404).send("posts not found")
+        else 
+            res.status(200).send({posts: [...posts], postsCount: count[0]['count(*)']})
     }
+    else 
+        res.status(404).send("posts not found")
 };

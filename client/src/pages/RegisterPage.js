@@ -27,8 +27,7 @@ export const RegisterPage = () => {
 
     const registerHandler = async() => {
         try {
-            const data = await request('/auth/signUp', 'POST', {...form})
-            console.log('data:', data);
+            await request('/auth/signUp', 'POST', {...form})
         }
         catch (e) {}
     };

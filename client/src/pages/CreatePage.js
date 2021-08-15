@@ -39,7 +39,7 @@ export const CreatePage = () => {
     const PostHandler = async(event) => {
         try {
             event.preventDefault();
-            const data = await request('/post/createPost', 'POST', {...form}, {'x-access-token': token})
+            await request('/post/createPost', 'POST', {...form}, {'x-access-token': token})
             history.push('/')
         }
         catch (e) {}

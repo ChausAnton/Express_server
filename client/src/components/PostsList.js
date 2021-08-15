@@ -2,51 +2,46 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export const PostsList = ({posts}) => {
-    if(!posts.length) {
+    if(!posts) {
         return <p className="center">Posts not found</p>
     }
-
-
+    const postsPerPage = 2
+    const nextPage = (parseInt(posts.CurPage) + 1) <= parseInt((posts.postsCount / postsPerPage) + 1) ? ("/home/" + (parseInt(posts.CurPage) + 1)) : "/home/" + parseInt((posts.postsCount / postsPerPage) + 1) 
+    const prevPage = (parseInt(posts.CurPage) - 1) > 0 ? ("/home/" + (parseInt(posts.CurPage) - 1)) : "/home/1"
     return (
         <div>
-            { posts.map((post) => {
+            { posts.posts.map((post) => {
                 return (
-                    <Link key={post[0].id} to={`/detail/${post[0].id}`}>
+                    <Link key={post.id} to={`/detail/${post.id}`}>
                         <div>
                             <div className="divider"></div>
                             <div className="section">
                                 <div className="card-panel blue darken-1 hoverable">
-                                    <h3 className="white-text">{post[0].title}</h3>
-                                    <p className="white-text flow-text">{post[0].content}</p>
+                                    <h3 className="white-text">{post.title}</h3>
+                                    <p className="white-text flow-text">{post.content}</p>
                                 </div>
                             </div>
                         </div>
                     </Link>
                 )
                 }) }
+            <ul className="pagination">
+                <li className="disabled"><a href={prevPage}><i className="material-icons">chevron_left</i></a></li>
+                {Array.from({length: parseInt((posts.postsCount /postsPerPage) + 1)}, (_, i) => i + 1).map((page) => {
+                    const pageUrl = "/home/" + page
+                    if(parseInt(posts.CurPage) === page) {
+                        return (
+                            <li key={page} className="active"><a href={pageUrl}>{page}</a></li>
+                        );
+                    }
+                    return (
+                        <li key={page} className="waves-effect"><a href={pageUrl}>{page}</a></li>
+                    );
+
+                    })
+                }
+                <li className="waves-effect"><a href={nextPage}><i className="material-icons">chevron_right</i></a></li>
+            </ul>
         </div>
     );
-
-    /* this is the second variant for displaying posts
-
-    return (
-            <div class="row">
-            { posts.map((post) => {
-                return (
-                    
-                    <div class="col s12 m4">
-                        <div class="card blue darken-1 hoverable">
-                            <div class="card-content white-text">
-                            <span class="card-title ">{post[0].title}</span>
-                            <p className="flow-text">{post[0].content}</p>
-                            </div>
-                            <div class="card-action">
-                            <a className="flow-text" href="#">This is link</a>
-                            </div>
-                        </div>
-                    </div>
-                )
-                }) }
-            </div>
-     );*/
 };

@@ -45,7 +45,7 @@ export const Navbar = () => {
         <div>
             <ul id="dropdown1" className="dropdown-content">
                     {JSON.parse(sessionStorage.getItem('categories')).map((category) => {
-                        const link = "/home/" + category.category_title
+                        const link = "/home/1/" + category.category_title
                         return (
                             <li key={category.id}><NavLink to={link}>{category.category_title}</NavLink></li>
                         );

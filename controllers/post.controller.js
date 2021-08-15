@@ -305,7 +305,7 @@ exports.getPostPerPage = async(req, res) => {
         if(!posts || !count)
             res.status(404).send("posts not found")
         else 
-            res.status(200).send({posts: [...posts], postsCount: count[0]['count(*)']})
+            res.status(200).send({posts: [...posts], postsCount: count[0]['count(*)'], CurPage: req.params.page})
     }
     else if (req.params.page > 0) {
         const posts = await db.sequelize.query(`select * from posts where status = 'active' limit ${(req.params.page - 1) * postsPerPage}, ${postsPerPage};` , { type: db.sequelize.QueryTypes.SELECT });
@@ -313,7 +313,7 @@ exports.getPostPerPage = async(req, res) => {
         if(!posts || !count)
             res.status(404).send("posts not found")
         else 
-            res.status(200).send({posts: [...posts], postsCount: count[0]['count(*)']})
+            res.status(200).send({posts: [...posts], postsCount: count[0]['count(*)'], CurPage: req.params.page})
     }
     else 
         res.status(404).send("posts not found")

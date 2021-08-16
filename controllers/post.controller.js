@@ -287,7 +287,7 @@ exports.getPostCategoryFilter = async(req, res) => {
     const posts = await PostMiddleware.getPostsByCategory(data.categories_id);
     let PostsCats = [];
     for(let post of posts) {
-        categories = await PostMiddleware.getCategoriesForPost(post.id);
+        categories = await PostMiddleware.getCategoriesForPost(post);
         PostsCats.push([post, categories])
     }
     const pagePosts = PostMiddleware.getPostForPage(req.body.page, PostsCats)
@@ -298,22 +298,39 @@ exports.getPostCategoryFilter = async(req, res) => {
 
 exports.getPostPerPage = async(req, res) => {
     const postsPerPage = 2
-
+    console.log(req.params.page)
     if(res.locals.user && res.locals.admin && req.params.page > 0) {
-        const posts = await db.sequelize.query(`select * from posts limit ${(req.params.page - 1) * postsPerPage}, ${postsPerPage};` , { type: db.sequelize.QueryTypes.SELECT });
-        const count = await db.sequelize.query(`select count(*) from posts;`, { type: db.sequelize.QueryTypes.SELECT });
-        if(!posts || !count)
-            res.status(404).send("posts not found")
+        let posts;
+        let count;
+        if(req.params.category) {
+            posts = await db.sequelize.query(`select * from posts where exists (select * from Category_sub_tables where posts.id = Category_sub_tables.post_id and exists (select * from Categories where Categories.id = Category_sub_tables.category_id and Categories.category_title = '${req.params.category}')) limit ${(req.params.page - 1) * postsPerPage}, ${postsPerPage};`, { type: db.sequelize.QueryTypes.SELECT });
+            count = await db.sequelize.query(`select count(*) from posts where exists (select * from Category_sub_tables where posts.id = Category_sub_tables.post_id and exists (select * from Categories where Categories.id = Category_sub_tables.category_id and Categories.category_title = '${req.params.category}'));`, { type: db.sequelize.QueryTypes.SELECT });
+        }
+        else {
+            posts = await db.sequelize.query(`select * from posts limit ${(req.params.page - 1) * postsPerPage}, ${postsPerPage};` , { type: db.sequelize.QueryTypes.SELECT });
+            count = await db.sequelize.query(`select count(*) from posts;`, { type: db.sequelize.QueryTypes.SELECT });
+        }
+        if(!posts.length || !count.length)
+            res.status(404).send({message: "posts not found"})
         else 
-            res.status(200).send({posts: [...posts], postsCount: count[0]['count(*)'], CurPage: req.params.page})
+            res.status(200).send({posts: [...posts], postsCount: count[0][Object.keys(count[0])[0]], CurPage: req.params.page})
     }
     else if (req.params.page > 0) {
-        const posts = await db.sequelize.query(`select * from posts where status = 'active' limit ${(req.params.page - 1) * postsPerPage}, ${postsPerPage};` , { type: db.sequelize.QueryTypes.SELECT });
-        const count = await db.sequelize.query(`select count(*) from posts where status = 'active';`, { type: db.sequelize.QueryTypes.SELECT });
-        if(!posts || !count)
-            res.status(404).send("posts not found")
+        let posts;
+        let count;
+
+        if(req.params.category) {
+            posts = await db.sequelize.query(`select * from posts where status = 'active' and exists (select * from Category_sub_tables where posts.id = Category_sub_tables.post_id and exists (select * from Categories where Categories.id = Category_sub_tables.category_id and Categories.category_title = '${req.params.category}')) limit ${(req.params.page - 1) * postsPerPage}, ${postsPerPage};`, { type: db.sequelize.QueryTypes.SELECT });
+            count = await db.sequelize.query(`select count(IF(status = 'active', 1, null)) from posts where exists (select * from Category_sub_tables where posts.id = Category_sub_tables.post_id and exists (select * from Categories where Categories.id = Category_sub_tables.category_id and Categories.category_title = '${req.params.category}'));`, { type: db.sequelize.QueryTypes.SELECT });
+        }
+        else {
+            posts = await db.sequelize.query(`select * from posts where status = 'active' limit ${(req.params.page - 1) * postsPerPage}, ${postsPerPage};` , { type: db.sequelize.QueryTypes.SELECT });
+            count = await db.sequelize.query(`select count(IF(status = 'active', 1, null)) from posts;`, { type: db.sequelize.QueryTypes.SELECT });
+        }
+        if(!posts.length || !count.length)
+            res.status(404).send({message: "posts not found"})
         else 
-            res.status(200).send({posts: [...posts], postsCount: count[0]['count(*)'], CurPage: req.params.page})
+            res.status(200).send({posts: [...posts], postsCount: count[0][Object.keys(count[0])[0]], CurPage: req.params.page})
     }
     else 
         res.status(404).send("posts not found")

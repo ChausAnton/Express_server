@@ -31,7 +31,6 @@ exports.getCategoriesForPost = async(post) => {
     res.push(categories)
 
     return res;
-
 }
 
 exports.getCategoriesForPosts = async(posts) => {
@@ -88,12 +87,13 @@ exports.getPostsByCategory = async(CategroyJson) => {
         categories_id.push(value);
     }
 
-    categories = await Category_sub_table.findAll({where: 
+    categories = await Category_sub_table.findAll({ where: 
         {category_id:  {
                 [Op.or]: categories_id
             }
         }
     });
+
 
     for(let cat of categories) {
         posts_id.push(cat.post_id);
@@ -104,6 +104,8 @@ exports.getPostsByCategory = async(CategroyJson) => {
             }
         }
     });
+
+
     
     return posts;
 };

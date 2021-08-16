@@ -1,13 +1,20 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 
-export const PostsList = ({posts}) => {
+export const PostsList = ({posts, category}) => {
+
     if(!posts) {
         return <p className="center">Posts not found</p>
     }
+
+    if(!category)
+        category = "";
+
     const postsPerPage = 2
-    const nextPage = (parseInt(posts.CurPage) + 1) <= parseInt((posts.postsCount / postsPerPage) + 1) ? ("/home/" + (parseInt(posts.CurPage) + 1)) : "/home/" + parseInt((posts.postsCount / postsPerPage) + 1) 
-    const prevPage = (parseInt(posts.CurPage) - 1) > 0 ? ("/home/" + (parseInt(posts.CurPage) - 1)) : "/home/1"
+
+    const numberOfPages = (posts.postsCount % postsPerPage) === 0 ? (posts.postsCount / postsPerPage) : parseInt((posts.postsCount / postsPerPage) + 1);
+    const nextPage = (parseInt(posts.CurPage) + 1) <= numberOfPages ? `/home/${(parseInt(posts.CurPage) + 1)}/${category}` : `/home/${numberOfPages}/${category}`;
+    const prevPage = (parseInt(posts.CurPage) - 1) > 0 ? `/home/${(parseInt(posts.CurPage) + 1)}/${category}` :  `/home/1/${category}`;
     return (
         <div>
             { posts.posts.map((post) => {
@@ -27,8 +34,12 @@ export const PostsList = ({posts}) => {
                 }) }
             <ul className="pagination">
                 <li className="disabled"><a href={prevPage}><i className="material-icons">chevron_left</i></a></li>
-                {Array.from({length: parseInt((posts.postsCount /postsPerPage) + 1)}, (_, i) => i + 1).map((page) => {
-                    const pageUrl = "/home/" + page
+                {Array.from({length: numberOfPages}, (_, i) => i + 1).map((page) => {
+                    let pageUrl;
+                    if(category) 
+                        pageUrl = "/home/" + page + '/' + category
+                    else 
+                        pageUrl = "/home/" + page
                     if(parseInt(posts.CurPage) === page) {
                         return (
                             <li key={page} className="active"><a href={pageUrl}>{page}</a></li>

@@ -40,7 +40,7 @@ export const HomePage = () => {
 
     return (
         <>
-            {!loading && <PostsList posts={posts}/>}
+            {!loading && <PostsList posts={posts} category={category}/>}
         </>
     );
 }

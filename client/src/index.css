@@ -32,6 +32,9 @@ input.yellow-input:focus {
 
 
 .profileImage {
+    position: absolute;
+    left: 10px;
+    top: 25%;
     border-radius: 50%;
     max-width: 200px;
     max-height: 200px;
@@ -39,5 +42,30 @@ input.yellow-input:focus {
 
 .Profile_backgroutd {
     background: url("public/profile_background.png") no-repeat;
+    min-width: 100%;
+    height: 200px;
 }
 
+.EditButton {
+    position: absolute;
+    right: 10px;
+    top: 58%;
+}
+
+.ProfileUserName {
+    position: absolute;
+    left: 225px;
+    top: 61%;
+    margin: 0px;
+}
+
+.ProfileLogin {
+    position: absolute;
+    left: 225px;
+    top: 68%;
+    margin: 0px;
+}
+
+.CardContent {
+    min-height: 95px;
+}

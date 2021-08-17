@@ -27,6 +27,10 @@ export const PostsList = ({posts, category}) => {
                                     <h3 className="white-text">{post.title}</h3>
                                     <p className="white-text flow-text">{post.content}</p>
                                 </div>
+                                <div className="chip">
+                                    <img src="/image/getUserImage/1" alt="Contact Person" />
+                                    Jane Doe
+                                </div>
                             </div>
                         </div>
                     </Link>

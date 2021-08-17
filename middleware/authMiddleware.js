@@ -4,7 +4,6 @@ const User = db.User;
 
 exports.checkUser = async(req, res, next) => {
     const token = req.headers["x-access-token"];
-
     if(token) {
         jwt.verify(token, process.env.SECRET, async (err, decodedToken) => {
             if(err) {

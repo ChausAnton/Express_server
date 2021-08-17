@@ -2,17 +2,20 @@ import express from 'express';
 import routes from '../routes';
 import morgan from 'morgan';
 import helmet from 'helmet';
-import router from '../routes/image';
-
+const fileUpload = require("express-fileupload")
+const cors = require("cors")
 const { checkUser } = require('../middleware/authMiddleware.js')
 
 const app = express();
-
+app.use(cors());
 app.use(helmet());
 app.use(morgan('combined'));
 app.use(express.json({extended: true}))
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({extended: true, limit: '50mb'}));
+app.use(fileUpload({
+    createParentPath: true
+}))
 
 //static files
 app.use(express.static('public'));

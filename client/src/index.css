@@ -30,3 +30,14 @@ input.yellow-input:focus {
     font-size: smaller;
 }
 
+
+.profileImage {
+    border-radius: 50%;
+    max-width: 200px;
+    max-height: 200px;
+}
+
+.Profile_backgroutd {
+    background: url("public/profile_background.png") no-repeat;
+}
+

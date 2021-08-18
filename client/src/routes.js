@@ -13,7 +13,7 @@ export const useRoutes = isAuth => {
     if(isAuth) {
         return (
             <Switch>
-                <Route path="/profile" exact>
+                <Route path="/profile/:id?" exact>
                     <ProfilePage />
                 </Route>
                 <Route path="/create" exact>

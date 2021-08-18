@@ -67,12 +67,12 @@ export const EditProfile = ({setEditProfileOnFalse}) => {
         <div className="col s4 m4">
                 <div className="card">
                     <div className="Profile_backgroud blue darken-2">
-                        <button className="btn-floating btn-large waves-effect waves-light red ButtonBack" onClick={setEditProfileOnFalse}> 
-                                <i className="material-icons" >arrow_back</i>
+                        <button className="btn-floating btn-large waves-effect waves-light grey lighten-1 ButtonBack" onClick={setEditProfileOnFalse}> 
+                                <i className="material-icons">arrow_back</i>
                         </button>
                         <img src={PrifileImage} alt="Avatar" width="200" height="200" className="EditProfileImage" id="ProfileImage"/>
                         <div className="boxForLoadNewImageButton">
-                            <button className="btn-floating btn-large waves-effect waves-light red LoadNewImage" id="LoadNewImageButton" onClick={openSelectImage}><i className="material-icons">add</i></button>
+                            <button className="btn-floating btn-large waves-effect waves-light grey lighten-1 LoadNewImage" id="LoadNewImageButton" onClick={openSelectImage}><i className="material-icons">add</i></button>
                         </div>
                     </div>
                     

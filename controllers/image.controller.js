@@ -17,15 +17,11 @@ exports.getUserImage = async(req, res) => {
 };
 
 exports.uploadUserImage = async(req, res) => {
-    console.log(req.files.file)
     if(res.locals.user && res.locals.user.id == req.params.id && req.files) {
-
         const fileName = res.locals.user.id + ".png";
         req.files.file.mv(`${__dirname}/../public/img/${fileName}`)
         User.update({image_path: fileName}, {where: {id: res.locals.user.id}});
-
         res.status(200).send({message: "success"})
-
     }
     else
         res.status(403).send({message: "only the owner of account can change their profile image"})

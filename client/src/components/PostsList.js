@@ -14,7 +14,7 @@ export const PostsList = ({posts, category}) => {
 
     const numberOfPages = (posts.postsCount % postsPerPage) === 0 ? (posts.postsCount / postsPerPage) : parseInt((posts.postsCount / postsPerPage) + 1);
     const nextPage = (parseInt(posts.CurPage) + 1) <= numberOfPages ? `/home/${(parseInt(posts.CurPage) + 1)}/${category}` : `/home/${numberOfPages}/${category}`;
-    const prevPage = (parseInt(posts.CurPage) - 1) > 0 ? `/home/${(parseInt(posts.CurPage) + 1)}/${category}` :  `/home/1/${category}`;
+    const prevPage = (parseInt(posts.CurPage) - 1) > 0 ? `/home/${(parseInt(posts.CurPage) - 1)}/${category}` :  `/home/1/${category}`;
     return (
         <div>
             { posts.posts.map((post) => {

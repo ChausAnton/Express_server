@@ -31,7 +31,7 @@ export const Profile = ({user}) => {
         : (<div className="center ProfileCard">
         <div className="col s4 m4">
                 <div className="card">
-                    <div className="Profile_backgroutd blue darken-2">
+                    <div className="Profile_backgroud blue darken-2">
                         <span className="ProfileUserName">{user.real_name}</span>
                         <img src={PrifileImage} alt="Avatar" width="200" height="200" className="profileImage"/>
                     </div>

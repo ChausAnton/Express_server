@@ -66,7 +66,7 @@ export const EditProfile = ({setEditProfileOnFalse}) => {
         <div className="center ProfileCard">
         <div className="col s4 m4">
                 <div className="card">
-                    <div className="Profile_backgroud blue darken-2">
+                    <div className="CardTopBackgroud blue darken-2">
                         <button className="btn-floating btn-large waves-effect waves-light grey lighten-1 ButtonBack" onClick={setEditProfileOnFalse}> 
                                 <i className="material-icons">arrow_back</i>
                         </button>

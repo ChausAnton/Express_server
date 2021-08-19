@@ -21,7 +21,7 @@ export const ProfilePage = () => {
             setUser(fetched)
         }
         catch (e) {}
-    }, [userId, request]);
+    }, [userId, request, id]);
 
     useEffect( () => {
         fetchUser();

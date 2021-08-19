@@ -12,6 +12,7 @@ export const Profile = ({user}) => {
         return <p className="center">User not found</p>
     }
 
+    console.log(user)
     let PrifileImage = "/image/getUserImage/" + userId;
     if(id)
         PrifileImage = "/image/getUserImage/" + id;
@@ -36,7 +37,7 @@ export const Profile = ({user}) => {
         : (<div className="center ProfileCard">
         <div className="col s4 m4">
                 <div className="card">
-                    <div className="Profile_backgroud blue darken-2">
+                    <div className="CardTopBackgroud blue darken-2">
                         <span className="ProfileUserName">{user.real_name}</span>
                         <img src={PrifileImage} alt="Avatar" width="200" height="200" className="profileImage"/>
                     </div>
@@ -50,7 +51,9 @@ export const Profile = ({user}) => {
                         <div className="row">
                             <div className="white-text ProfileLogin">{user.login}</div>
                         </div>
-                        
+                        <div className="row">
+                            <div className="white-text UserRating">Rating: {user.rating}</div>
+                        </div>
                     </div>
             </div>
         </div>

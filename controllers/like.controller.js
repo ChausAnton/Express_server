@@ -49,7 +49,7 @@ exports.getLikesForComment = async(req, res) => {
 
 exports.createLike = async(req, res) => {
     if(!res.locals.user) {
-        return res.status(401).send("only logged user can rated");
+        return res.status(401).send({message: "only logged user can rated"});
     }
 
     const schema = {
@@ -75,24 +75,27 @@ exports.createLike = async(req, res) => {
     }
 
     if(data.post_id && data.comment_id) {
-        return res.status().send("post_id and comment_id sent, only one required")
+        return res.status().send({message: "post_id and comment_id sent, only one required"})
     }
 
     let like = null;
     if(data.post_id) {
         like = await Likes.findOne({where: {author_id: res.locals.user.id, post_id: data.post_id}})
-        Likes.destroy({where: {author_id: res.locals.user.id, post_id: data.post_id}});
     }
     else {
         like = await Likes.findOne({where: {author_id: res.locals.user.id, comment_id: data.comment_id}})
-        Likes.destroy({where: {author_id: res.locals.user.id, comment_id: data.comment_id}});
     }
 
     
     if(!like)  {
         Likes.create(data).then((value) => {
-            res.status(201).send(value)   
+            res.status(201).send({message: value})   
         });
+
+        if(data.post_id)
+            Likes.destroy({where: {author_id: res.locals.user.id, post_id: data.post_id}});
+        else
+            Likes.destroy({where: {author_id: res.locals.user.id, comment_id: data.comment_id}});
 
         if(data.type.localeCompare('like') == 0) 
             ratingChangeMiddleware.Change(data.post_id, data.comment_id, 1);
@@ -106,13 +109,18 @@ exports.createLike = async(req, res) => {
             res.status(201).send(value)   
         });
 
+        if(data.post_id)
+            Likes.destroy({where: {author_id: res.locals.user.id, post_id: data.post_id}});
+        else
+            Likes.destroy({where: {author_id: res.locals.user.id, comment_id: data.comment_id}});
+
         if(data.type.localeCompare('like') == 0) 
             ratingChangeMiddleware.Change(data.post_id, data.comment_id, 2);
         else
             ratingChangeMiddleware.Change(data.post_id, data.comment_id, -2);
     }
     else {
-        res.status(400).send("error")
+        res.status(400).send({message: "error"})
     }
     
 

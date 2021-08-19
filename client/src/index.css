@@ -40,7 +40,7 @@ input.yellow-input:focus {
     max-height: 200px;
 }
 
-.Profile_backgroud {
+.CardTopBackgroud {
     position: relative;
     background: url("public/profile_background.png") no-repeat;
     min-width: 100%;
@@ -66,6 +66,14 @@ input.yellow-input:focus {
     top: 68%;
     margin: 0px;
 }
+
+.UserRating {
+    position: absolute;
+    left: 225px;
+    top: 75%;
+    margin: 0px;
+}
+
 
 .CardContent {
     min-height: 95px;
@@ -95,4 +103,67 @@ input.yellow-input:focus {
     position: absolute;
     left: 10px;
     top: 10px;
+}
+
+.PostTitleContainer {
+    min-height: 100%;
+    min-width: 100%;
+}
+
+.PostTitle {
+    position: relative;
+    top: 150px;
+}
+
+.Title {
+    text-align: center;
+}
+
+.PostDate{
+    position: absolute;
+    left: 10px;
+    top: 10px; 
+}
+
+.PostAuthor {
+    position: absolute;
+    left: 10px;
+    top: 60px; 
+}
+
+.Categoies {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.PostCategory {
+    margin-bottom: 15px;
+}
+
+.CommentAuthorBox {
+    min-width: 100%;
+}
+
+.CommentAuthor {
+    float: left;
+    margin: 0 auto;
+}
+.commentContent {
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.CommentText {
+    text-align: left;
+    word-wrap: break-word;
+}
+
+.PostContent {
+    text-align: left;
+    word-wrap: break-word;
+}
+.Like, .Dislike, .RatingBox {
+    display: inline-block;
+    margin-left: 10px;
 }

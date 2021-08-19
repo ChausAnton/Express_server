@@ -36,6 +36,7 @@ exports.getPostDetail = async(req, res) => {
 
     let comments = [];
     let categories = [];
+
     for(const iter of result) {
         comments.push(JSON.stringify({
             author_id_comment: iter.author_id_comment, 
@@ -59,6 +60,21 @@ exports.getPostDetail = async(req, res) => {
         return JSON.parse(comment)
     });;
 
+    let index = 0;
+    let getCommentsAuthors = "select id, real_name from users where id = ";
+    for(let comment of data.Comments_data) {
+        if(index == 0 && comment) {
+            getCommentsAuthors += comment.author_id_comment;
+        }
+        else if(comment && index > 0) {
+            getCommentsAuthors += " or id = " + comment.author_id_comment;
+        }
+        index++;
+    }
+    const CommentsAuthors = await db.sequelize.query(`${getCommentsAuthors};`, { type: db.sequelize.QueryTypes.SELECT })
+    for(let i = 0; i < data.Comments_data.length; i++) {
+        data.Comments_data[i].CommentAuthor = CommentsAuthors[i]
+    }
     res.status(200).send(data)
 }
 

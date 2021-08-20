@@ -163,7 +163,24 @@ input.yellow-input:focus {
     text-align: left;
     word-wrap: break-word;
 }
-.Like, .Dislike, .RatingBox {
+.Like, .Dislike, .RatingContainer {
     display: inline-block;
     margin-left: 10px;
+}
+
+.RatingChipBox {
+    min-height: 20px;
+    min-width: 100%;
+}
+
+.RatingBox {
+    position: absolute;
+    left: 20px;
+    bottom: 10px;
+}
+
+.AddCommentBox {
+    min-height: 100px;
+    padding: 20px;
+    margin-bottom: 20px;
 }

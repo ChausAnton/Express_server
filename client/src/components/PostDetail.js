@@ -5,11 +5,12 @@ import { Comments } from "./Comments";
 import { useMessage } from '../hooks/message.hook';
 import { AuthContext } from '../context/AuthContext';
 
-export const PostDetail = ({post}) => {
+export const PostDetail = ({post, commentsData}) => {
     const history = useHistory();
     const {token} = useContext(AuthContext);
     const {request, error, clearError} = useHttp();
     const message = useMessage();
+    
 
     useEffect( () => {
         message(error);
@@ -80,21 +81,23 @@ export const PostDetail = ({post}) => {
                     </div>
                     <div className="card-content CardContent blue darken-2">
                         <h3 className="white-text flow-text PostContent">{post.Post_data.content}</h3>
-                        <div className="RaitingBox">
-                            <div className="Like" id={1} onClick={likeDislikeHandler} >
-                                <i className="material-icons white-text" id='like'>arrow_upward</i>
-                            </div>
-                            <div className="RatingBox">
-                                <span className="white-text flow-text">{post.Post_data.likes}</span>
-                            </div>
-                            <div className="Dislike" onClick={likeDislikeHandler} id={-1}>
-                                <i className="material-icons white-text" id="dislike">arrow_downward</i>
+                        <div className="RatingChipBox">
+                            <div className="RatingBox chip">
+                                <div className="Like" id={1} onClick={likeDislikeHandler} >
+                                    <i className="material-icons" id='like'>arrow_upward</i>
+                                </div>
+                                <div className="RatingContainer">
+                                    <span className="flow-text">{post.Post_data.likes}</span>
+                                </div>
+                                <div className="Dislike" onClick={likeDislikeHandler} id={-1}>
+                                    <i className="material-icons" id="dislike">arrow_downward</i>
+                                </div>
                             </div>
                         </div>               
                     </div>
                 </div>
             </div>
-            <Comments comments={post.Comments_data}/>
+            <Comments comments={commentsData}/>
         </div>
     );//arrow_drop_down arrow_drop_up
 };

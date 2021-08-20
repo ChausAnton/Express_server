@@ -57,12 +57,11 @@ exports.createLike = async(req, res) => {
         post_id: {type: "number", optional: true},
         comment_id: {type: "number", optional: true}
     }
-
     let data = {
         author_id: res.locals.user.id,
         type: req.body.type,
         post_id: req.body.post_id,
-        comment_id: req.body.comment_id
+        comment_id: parseInt(req.body.comment_id)
     }
 
     const v = new Validator();

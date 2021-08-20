@@ -9,7 +9,6 @@ export const PostsList = ({posts, category}) => {
 
     if(!category)
         category = "";
-
     const postsPerPage = 2
 
     const numberOfPages = (posts.postsCount % postsPerPage) === 0 ? (posts.postsCount / postsPerPage) : parseInt((posts.postsCount / postsPerPage) + 1);
@@ -28,8 +27,8 @@ export const PostsList = ({posts, category}) => {
                                     <p className="white-text flow-text">{post.content}</p>
                                 </div>
                                 <div className="chip">
-                                    <img src="/image/getUserImage/1" alt="Contact Person" />
-                                    Jane Doe
+                                    <img src={`/image/getUserImage/${post.author_id}`} alt="Contact Person" />
+                                    {post.real_name}
                                 </div>
                             </div>
                         </div>

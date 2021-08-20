@@ -10,15 +10,21 @@ export const DetailPage = () => {
     const {id} = useParams();
 
     const [post, setPost] = useState();
+    const [comments, setComments] = useState();
+
     const {loading, request} = useHttp();
     const {token} = useContext(AuthContext);
 
     const fetchPost = useCallback(async() => {
         try {
-            const fetched = await request('/post/getPostDetail/' + id, 'GET', null, {
+            const posts = await request('/post/getPostDetail/' + id, 'GET', null, {
                 'x-access-token': token
             })
-            setPost(fetched)
+            setPost(posts)
+            const Comments = await request('/comment/getCommentsForPost/' + id, 'GET', null, {
+                'x-access-token': token
+            })
+            setComments(Comments)
         }
         catch (e) {}
     }, [token, id, request]);
@@ -33,7 +39,7 @@ export const DetailPage = () => {
     
     return (
         <>
-            {!loading && <PostDetail post={post}/>}
+            {!loading && <PostDetail post={post} commentsData={comments}/>}
         </>
     );
 }

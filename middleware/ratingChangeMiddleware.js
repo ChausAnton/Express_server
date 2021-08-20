@@ -9,15 +9,15 @@ exports.Change = async(post_id, comment_id, number) => {
 
     if(post_id) {
         const post = await Post.findOne({where: {id: post_id}});
-        author_id = post.author_id
+        author_id = post.author_id_comment
 
         Post.update({likes: (post.likes + number)}, {where: {id: post_id}});
     }
     else {
         const comment = await Comment.findOne({where: {id: comment_id}});
-        author_id = comment.author_id
+        author_id = comment.author_id_comment
         
-        Comment.update({likes: (comment.likes + number)}, {where: {id: comment_id}});
+        Comment.update({likes_comment: (comment.likes_comment + number)}, {where: {id: comment_id}});
     }
 
     User.findOne({where: {id: author_id}}).then((user) => {

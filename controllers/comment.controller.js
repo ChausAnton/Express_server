@@ -48,6 +48,58 @@ exports.getComments = async(req, res) => {
     }
 };
 
+exports.getCommentsForPost = async(req, res) => {
+    if(res.locals.user && res.locals.admin && req.params.id) {
+        db.sequelize.query(`select * from users inner join comments on comments.author_id_comment = users.id where comments.post_id_comment = ${req.params.id};`,{ type: db.sequelize.QueryTypes.SELECT }).then((comments) => {
+            if(comments) {
+                let data = []
+                for(let iter of comments) {
+                    let temp = {
+                        id: iter.id,
+                        real_name: iter.real_name,
+                        author_id_comment: iter.author_id_comment,
+                        content_comment: iter.content_comment,
+                        likes_comment: iter.likes_comment,
+                        post_id_comment: iter.post_id_comment,
+
+                    }
+                    data.push(temp)
+                }
+                res.status(200).send(data)
+            }
+            else {
+                res.status(404).send({message: "comments not found"})
+            }
+        });
+    }
+    else if(req.params.id) {
+        db.sequelize.query(`select * from users inner join comments on comments.author_id_comment = users.id where comments.post_id_comment = ${req.params.id} and comments.status_comment = 'active';`,{ type: db.sequelize.QueryTypes.SELECT }).then((comments) => {
+            if(comments) {
+                let data = []
+                for(let iter of comments) {
+                    let temp = {
+                        id: iter.id,
+                        real_name: iter.real_name,
+                        author_id_comment: iter.author_id_comment,
+                        content_comment: iter.content_comment,
+                        likes_comment: iter.likes_comment,
+                        post_id_comment: iter.post_id_comment,
+
+                    }
+                    data.push(temp)
+                }
+                res.status(200).send(data)
+            }
+            else {
+                res.status(404).send({message: "comments not found"})
+            }
+        });
+    }
+    else {
+        res.status(404).send({message: "no id"})
+    }
+};
+
 
 exports.createComment = async(req, res) => {
     if(res.locals.user) {
@@ -57,7 +109,7 @@ exports.createComment = async(req, res) => {
         };
 
         let data = {
-            post_id_comment: req.body.post_id_comment,
+            post_id_comment: parseInt(req.body.post_id_comment),
             author_id_comment: res.locals.user.id,
             content_comment: req.body.content_comment,
             likes_comment: 0,

@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 
 export const ProfilePage = () => {
     const [user, setUser] = useState();
+    const [posts, setPosts] = useState();
     const {loading, request} = useHttp();
     const {userId} = useContext(AuthContext);
     const {id} = useParams();
@@ -23,8 +24,22 @@ export const ProfilePage = () => {
         catch (e) {}
     }, [userId, request, id]);
 
+    const fetchPosts = useCallback(async() => {
+        try {
+            let fetched;
+            if(id)
+                fetched = await request('/post/getPostsForUser/' + id, 'GET', null)
+            else 
+                fetched = await request('/post/getPostsForUser/' + userId, 'GET', null)
+            setPosts(fetched)
+            console.log(fetched)
+        }
+        catch (e) {}
+    }, [userId, request, id]);
+
     useEffect( () => {
         fetchUser();
+        fetchPosts();
     }, [fetchUser]);
 
     if(loading) {
@@ -33,7 +48,7 @@ export const ProfilePage = () => {
 
     return (
         <>
-            {!loading && <Profile user={user}/>}
+            {!loading && <Profile user={user} posts={posts}/>}
         </>
     );
 

@@ -6,6 +6,7 @@ router.get('/getPost/:id', post.getPost);
 router.get('/getPosts', post.getPosts);
 router.get('/getPostDateFilter', post.getPostDateFilter);//
 router.get('/getPostCategoryFilter', post.getPostCategoryFilter);
+router.get('/getPostsForUser/:id', post.getPostsForUser);
 router.get('/getPostPerPage/:page/:category?', post.getPostPerPage);
 router.get('/getPostDetail/:id', post.getPostDetail);
 router.post('/createPost', post.createPost);

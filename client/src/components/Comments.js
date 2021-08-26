@@ -38,7 +38,7 @@ export const Comments = ({comments}) => {
 
     const setLikeDislike = async(type, commentID) => {
         try {
-            await request('/like/createLike', 'POST', {type: type, comment_id: commentID}, {'x-access-token': token})
+            await request('/like/createLike', 'POST', {type: type, comment_id: parseInt(commentID)}, {'x-access-token': token})
         }
         catch (e) {}
     }

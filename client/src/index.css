@@ -184,3 +184,21 @@ input.yellow-input:focus {
     padding: 20px;
     margin-bottom: 20px;
 }
+
+.UserInfoNavbar {
+    display: inline-block;
+}
+
+.UserInfoNavbarIcon {
+    position: absolute;
+    top: 0px;
+    left: 175px;
+}
+
+.ChipCustom {
+    min-width: 110px;
+}
+
+.Logo {
+    padding-right: 10px;
+}

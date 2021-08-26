@@ -2,8 +2,9 @@ import React, { useContext, useState } from "react";
 import { EditProfile } from "./EditProfile";
 import { AuthContext } from '../context/AuthContext';
 import { useParams } from "react-router-dom";
+import { Link} from "react-router-dom";
 
-export const Profile = ({user}) => {
+export const Profile = ({user, posts}) => {
     const [editProfile, setEditProfile] = useState(false);
     const {userId} = useContext(AuthContext);
     const {id} = useParams();
@@ -12,7 +13,6 @@ export const Profile = ({user}) => {
         return <p className="center">User not found</p>
     }
 
-    console.log(user)
     let PrifileImage = "/image/getUserImage/" + userId;
     if(id)
         PrifileImage = "/image/getUserImage/" + id;
@@ -54,8 +54,23 @@ export const Profile = ({user}) => {
                         <div className="row">
                             <div className="white-text UserRating">Rating: {user.rating}</div>
                         </div>
-                    </div>
+                    </div> 
             </div>
+                {posts ? posts.map(post => {
+                        return (
+                            <Link key={post.id} to={`/detail/${post.id}`}>
+                                <div>
+                                    <div className="divider"></div>
+                                    <div className="section">
+                                        <div className="card-panel blue darken-1 hoverable">
+                                            <h3 className="white-text">{post.title}</h3>
+                                            <p className="white-text flow-text">{post.content}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Link>
+                        )
+                    }) : <p className="center">Posts not found</p>}
         </div>
     </div>)}
     </>

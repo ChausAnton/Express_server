@@ -61,7 +61,7 @@ exports.createLike = async(req, res) => {
         author_id: res.locals.user.id,
         type: req.body.type,
         post_id: req.body.post_id,
-        comment_id: parseInt(req.body.comment_id)
+        comment_id: req.body.comment_id
     }
 
     const v = new Validator();

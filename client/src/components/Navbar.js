@@ -64,7 +64,10 @@ export const Navbar = () => {
                 <NavLink to="/profile" className="chip ChipCustom">
                     <img src={userAvater} alt="avatar" width="50" height="50"/>
                     <div className="UserInfoNavbar">{user.login}</div>
-                    <i className="material-icons UserInfoNavbarIcon">star</i>
+                    {user.role.localeCompare("admin") === 0 ?
+                        <i className="material-icons UserInfoNavbarIcon">star</i> :
+                        <></>
+                    }
                 </NavLink>
                 <ul id="nav-mobile" className="right">
                     <li><a className="dropdown-trigger" data-target="dropdown1">Categories<i className="material-icons right">arrow_drop_down</i></a></li>

@@ -9,7 +9,7 @@ export const ProfilePage = () => {
     const [user, setUser] = useState();
     const [posts, setPosts] = useState();
     const {loading, request} = useHttp();
-    const {userId} = useContext(AuthContext);
+    const {userId, token} = useContext(AuthContext);
     const {id} = useParams();
 
     const fetchUser = useCallback(async() => {
@@ -28,19 +28,19 @@ export const ProfilePage = () => {
         try {
             let fetched;
             if(id)
-                fetched = await request('/post/getPostsForUser/' + id, 'GET', null)
+                fetched = await request('/post/getPostsForUser/' + id, 'GET', null, {'x-access-token': token})
             else 
-                fetched = await request('/post/getPostsForUser/' + userId, 'GET', null)
+                fetched = await request('/post/getPostsForUser/' + userId, 'GET', null, {'x-access-token': token})
             setPosts(fetched)
             console.log(fetched)
         }
         catch (e) {}
-    }, [userId, request, id]);
+    }, [userId, request, id, token]);
 
     useEffect( () => {
         fetchUser();
         fetchPosts();
-    }, [fetchUser]);
+    }, [fetchUser, fetchPosts]);
 
     if(loading) {
         return <Loader />

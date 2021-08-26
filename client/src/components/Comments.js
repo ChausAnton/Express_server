@@ -20,9 +20,9 @@ export const Comments = ({comments}) => {
         content_comment: '', post_id_comment: id
     });
 
-    useEffect( () => {
+    useEffect(() => {
         window.M.updateTextFields()
-    }, []);
+    });
 
     if(!comments) {
         return <p className="center">comments not found</p>

@@ -1,17 +1,18 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useHttp } from "../hooks/http.hook";
 import { Comments } from "./Comments";
 import { useMessage } from '../hooks/message.hook';
 import { AuthContext } from '../context/AuthContext';
+import { EditPost } from "./EditPost";
 
 export const PostDetail = ({post, commentsData}) => {
     const history = useHistory();
-    const {token} = useContext(AuthContext);
+    const {token, userId} = useContext(AuthContext);
     const {request, error, clearError} = useHttp();
     const message = useMessage();
+    const [editPost, setEditPost] = useState(false);
     
-
     useEffect( () => {
         message(error);
         clearError();
@@ -42,10 +43,21 @@ export const PostDetail = ({post, commentsData}) => {
         history.push('/home/1/' + event.target.childNodes[0].nodeValue)
     }
 
+    const setEditPostOnTrue = () => {
+        setEditPost(true)
+    }
+
+    const setEditPostOnFalse = () => {
+        setEditPost(false)
+    }
 
 
     return (
-        <div className="center">
+        <>
+        { editPost ? (<div> 
+            <EditPost setEditPostOnFalse={setEditPostOnFalse}/> 
+        </div>) : 
+        (<div className="center">
             <div className="col s4 m4">
                 <div className="card">
                     <div className="CardTopBackgroud">
@@ -79,6 +91,12 @@ export const PostDetail = ({post, commentsData}) => {
                             </div>
                         </div>
                     </div>
+                    {post.Author_data.author_id === userId ? 
+                        <button className="btn-floating btn-large waves-effect waves-light red EditButtonPost" onClick={setEditPostOnTrue}> 
+                                    <i className="material-icons" >edit</i>
+                        </button> :
+                        <></>
+                    }
                     <div className="card-content CardContent blue darken-2">
                         <h3 className="white-text flow-text PostContent">{post.Post_data.content}</h3>
                         <div className="RatingChipBox">
@@ -98,6 +116,7 @@ export const PostDetail = ({post, commentsData}) => {
                 </div>
             </div>
             <Comments comments={commentsData}/>
-        </div>
-    );//arrow_drop_down arrow_drop_up
+        </div>)
+        }</>
+    );
 };

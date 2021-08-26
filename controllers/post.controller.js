@@ -196,12 +196,12 @@ exports.updatePost = async(req, res) => {
         content: {type: "string", optional: true},
         category_id: {type: "object", optional: true}
     }
-
+   
     let data = {
         status: req.body.status,
         title: req.body.title,
         content: req.body.content,
-        category_id: req.body.category_id,
+        category_id: req.body.category_id
     }
 
     const v = new Validator();
@@ -229,9 +229,9 @@ exports.updatePost = async(req, res) => {
     }
 
     if(!res.locals.admin && !res.locals.user)
-        res.status(403).send("You don't have permission to change this data");
+        res.status(403).send({message: "You don't have permission to change this data"});
     else
-        res.status(200).send("data updated");
+        res.status(200).send({message: "data updated"});
 };
 
 exports.deletePost = async(req, res) => {

@@ -1,17 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
-import { useHttp } from '../hooks/http.hook';
+import React, { useContext, useState, useEffect } from "react";
 import { useMessage } from '../hooks/message.hook';
+import { useHttp } from '../hooks/http.hook';
+import { AuthContext } from '../context/AuthContext';
 import Select from 'react-select';
+import { useParams } from "react-router-dom";
 
 
-export const CreatePage = () => {
-    const history = useHistory();
+export const EditPost = ({setEditPostOnFalse}) => {
     const message = useMessage();
 
     const {token} = useContext(AuthContext);
     const {loading, error, request, clearError} = useHttp()
+    const {id} = useParams();
 
     const [form, setForm] = useState ( {
         title: '', content: '', category_id: {}
@@ -36,11 +36,18 @@ export const CreatePage = () => {
         }
     };
 
-    const PostHandler = async(event) => {
+    const PostEditHandler = async(event) => {
+        
         try {
-            event.preventDefault();
-            await request('/post/createPost', 'POST', {...form}, {'x-access-token': token})
-            history.push('/')
+            const obj = {}
+            console.log(Object.keys(form.category_id).length !== 0)
+            for (const [key, value] of Object.entries(form)) {
+                if(value || ((typeof(value)).localeCompare("object") === 0 && Object.keys(value).length !== 0))
+                    obj[key] = value
+            }
+            await request('/post/updatePost/' + id, 'PUT', {...obj}, {'x-access-token': token})
+            window.location.reload();
+            setEditPostOnFalse();
         }
         catch (e) {}
     };
@@ -79,12 +86,14 @@ export const CreatePage = () => {
         })
     }
 
-
     return (
         <div>
             <div className="card blue darken-1">
                 <div className="card-content white-text">
-                    <span className="card-title">Create Post</span>
+                    <button className="btn-floating btn-large waves-effect waves-light grey lighten-1 EditPostButtonBack" onClick={setEditPostOnFalse}> 
+                            <i className="material-icons">arrow_back</i>
+                    </button>
+                    <span className="card-title center-align EditPostTitleCard">Edit Post</span>
                         <div>
                             <div className="input-field">
                                 <input placeholder="input title" 
@@ -124,8 +133,8 @@ export const CreatePage = () => {
                         </div>
                 </div>
                 <div className="card-action center-align">
-                    <button className="btn waves-light red" onClick={PostHandler} disabled={loading}>Submit
-                        <i class="material-icons right">send</i>
+                    <button className="btn waves-light red" onClick={PostEditHandler} disabled={loading}>Submit
+                        <i className="material-icons right">send</i>
                     </button>
                 </div>
             </div>

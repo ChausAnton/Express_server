@@ -192,7 +192,7 @@ input.yellow-input:focus {
 .UserInfoNavbarIcon {
     position: absolute;
     top: 0px;
-    left: 175px;
+    left: 178px;
 }
 
 .ChipCustom {
@@ -201,4 +201,20 @@ input.yellow-input:focus {
 
 .Logo {
     padding-right: 10px;
+}
+
+.EditButtonPost {
+    position: absolute;
+    right: 10px;
+    top: 52%;
+}
+
+.EditPostButtonBack {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+
+.EditPostTitleCard {
+    min-height: 55px;
 }

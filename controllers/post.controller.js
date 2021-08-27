@@ -14,6 +14,8 @@ exports.getPostDetail = async(req, res) => {
             content: result[0].content,
             likes: result[0].likes,
             status: result[0].status,
+            createdAt: result[0].PostCreatedAt,
+            updatedAt: result[0].PostUpdatedAt,
         },
 
         Author_data: {
@@ -29,9 +31,6 @@ exports.getPostDetail = async(req, res) => {
         Categories_data: [],
 
         Comments_data: [],
-
-        createdAt: result[0].createdAt,
-        updatedAt: result[0].updatedAt,
     };
 
     let comments = [];
@@ -351,14 +350,16 @@ exports.getPostPerPage = async(req, res) => {
         else {
             const data = posts.map((post) => { 
                 return {
-                id: post.id,
-                author_id: post.author_id,
-                content: post.content,
-                createdAt: post.createdAt,
-                likes: post.likes,
-                rating: post.rating,
-                real_name: post.real_name,
-                title: post.title
+                    id: post.id,
+                    author_id: post.author_id,
+                    content: post.content,
+                    createdAt: post.createdAt,
+                    likes: post.likes,
+                    rating: post.rating,
+                    real_name: post.real_name,
+                    title: post.title,
+                    createdAt: post.PostCreatedAt,
+                    updatedAt: post.PostUpdatedAt
                 }
             })
             res.status(200).send({posts: [...data], postsCount: count[0][Object.keys(count[0])[0]], CurPage: req.params.page})
@@ -381,14 +382,16 @@ exports.getPostPerPage = async(req, res) => {
         else {
             const data = posts.map((post) => { 
                 return {
-                id: post.id,
-                author_id: post.author_id,
-                content: post.content,
-                createdAt: post.createdAt,
-                likes: post.likes,
-                rating: post.rating,
-                real_name: post.real_name,
-                title: post.title
+                    id: post.id,
+                    author_id: post.author_id,
+                    content: post.content,
+                    createdAt: post.createdAt,
+                    likes: post.likes,
+                    rating: post.rating,
+                    real_name: post.real_name,
+                    title: post.title,
+                    createdAt: post.PostCreatedAt,
+                    updatedAt: post.PostUpdatedAt
                 }
             })
             res.status(200).send({posts: [...data], postsCount: count[0][Object.keys(count[0])[0]], CurPage: req.params.page})

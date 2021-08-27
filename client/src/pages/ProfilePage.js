@@ -32,7 +32,6 @@ export const ProfilePage = () => {
             else 
                 fetched = await request('/post/getPostsForUser/' + userId, 'GET', null, {'x-access-token': token})
             setPosts(fetched)
-            console.log(fetched)
         }
         catch (e) {}
     }, [userId, request, id, token]);

@@ -71,6 +71,13 @@ export const Comments = ({comments}) => {
                                             {comment.real_name}
                                         </div>
                                     </div>
+                                    <div className="CommentDate">
+                                        <div className="CommentDateDopBox">
+                                            <div className="chip">
+                                                <span>Posted on: {comment.createdAt.split('T')[0]}</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <br/>
                                     <div className="commentContent">
                                         <h3 className="white-text flow-text CommentText">{comment.content_comment}</h3>

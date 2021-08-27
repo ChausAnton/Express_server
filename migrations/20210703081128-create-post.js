@@ -30,12 +30,12 @@ module.exports = {
       status: {
         type: Sequelize.ENUM('active', 'inactive')
       },
-      createdAt: {
+      PostCreatedAt: {
         type: 'TIMESTAMP',
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false
       },
-      updatedAt: {
+      PostUpdatedAt: {
         type: 'TIMESTAMP',
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false

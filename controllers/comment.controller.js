@@ -50,7 +50,7 @@ exports.getComments = async(req, res) => {
 
 exports.getCommentsForPost = async(req, res) => {
     if(res.locals.user && res.locals.admin && req.params.id) {
-        db.sequelize.query(`select * from users inner join comments on comments.author_id_comment = users.id where comments.post_id_comment = ${req.params.id};`,{ type: db.sequelize.QueryTypes.SELECT }).then((comments) => {
+        db.sequelize.query(`select * from users inner join comments on comments.author_id_comment = users.id where comments.post_id_comment = ${req.params.id} order by comments.likes_comment ASC;`,{ type: db.sequelize.QueryTypes.SELECT }).then((comments) => {
             if(comments) {
                 let data = []
                 for(let iter of comments) {
@@ -61,7 +61,8 @@ exports.getCommentsForPost = async(req, res) => {
                         content_comment: iter.content_comment,
                         likes_comment: iter.likes_comment,
                         post_id_comment: iter.post_id_comment,
-
+                        createdAt: iter.CommentCreatedAt,
+                        updatedAt: iter.CommentUpdatedAt
                     }
                     data.push(temp)
                 }
@@ -73,7 +74,7 @@ exports.getCommentsForPost = async(req, res) => {
         });
     }
     else if(req.params.id) {
-        db.sequelize.query(`select * from users inner join comments on comments.author_id_comment = users.id where comments.post_id_comment = ${req.params.id} and comments.status_comment = 'active';`,{ type: db.sequelize.QueryTypes.SELECT }).then((comments) => {
+        db.sequelize.query(`select * from users inner join comments on comments.author_id_comment = users.id where comments.post_id_comment = ${req.params.id} and comments.status_comment = 'active' order by comments.likes_comment ASC;`,{ type: db.sequelize.QueryTypes.SELECT }).then((comments) => {
             if(comments) {
                 let data = []
                 for(let iter of comments) {
@@ -84,7 +85,8 @@ exports.getCommentsForPost = async(req, res) => {
                         content_comment: iter.content_comment,
                         likes_comment: iter.likes_comment,
                         post_id_comment: iter.post_id_comment,
-
+                        createdAt: iter.CommentCreatedAt,
+                        updatedAt: iter.CommentUpdatedAt
                     }
                     data.push(temp)
                 }

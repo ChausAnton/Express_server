@@ -26,12 +26,12 @@ module.exports = {
           key: 'id',
         }
       },
-      createdAt: {
+      CategorySubCreatedAt: {
         type: 'TIMESTAMP',
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false
       },
-      updatedAt: {
+      CategorySubUpdatedAt: {
         type: 'TIMESTAMP',
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false

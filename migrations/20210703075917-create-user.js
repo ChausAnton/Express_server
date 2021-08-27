@@ -39,12 +39,12 @@ module.exports = {
       role: {
         type: Sequelize.ENUM('admin', 'user')
       },
-      createdAt: {
+      UserCreatedAt: {
         type: 'TIMESTAMP',
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false
       },
-      updatedAt: {
+      UserUpdatedAt: {
         type: 'TIMESTAMP',
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false

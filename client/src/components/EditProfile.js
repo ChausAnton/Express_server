@@ -26,7 +26,6 @@ export const EditProfile = ({setEditProfileOnFalse}) => {
 
     const fileSelectedHandler = event => {
         if(event.target.files[0]) {
-            console.log(event.target.files[0])
             const image = document.getElementById('ProfileImage');
             image.src = window.URL.createObjectURL(event.target.files[0]);
         }

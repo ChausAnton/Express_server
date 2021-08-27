@@ -40,12 +40,12 @@ module.exports = {
       type: {
         type: Sequelize.ENUM('like', 'dislike')
       },
-      createdAt: {
+      LikeCreatedAt: {
         type: 'TIMESTAMP',
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false
       },
-      updatedAt: {
+      LikeUpdatedAt: {
         type: 'TIMESTAMP',
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false

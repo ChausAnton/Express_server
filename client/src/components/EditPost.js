@@ -40,7 +40,6 @@ export const EditPost = ({setEditPostOnFalse}) => {
         
         try {
             const obj = {}
-            console.log(Object.keys(form.category_id).length !== 0)
             for (const [key, value] of Object.entries(form)) {
                 if(value || ((typeof(value)).localeCompare("object") === 0 && Object.keys(value).length !== 0))
                     obj[key] = value

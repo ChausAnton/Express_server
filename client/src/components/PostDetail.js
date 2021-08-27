@@ -63,7 +63,7 @@ export const PostDetail = ({post, commentsData}) => {
                     <div className="CardTopBackgroud">
                         <div className="PostDate">
                             <div className="chip">
-                                <span>Posted on: {post.createdAt.split('T')[0]}</span>
+                                <span>Posted on: {post.Post_data.createdAt.split('T')[0]}</span>
                             </div>
                         </div>
                         <div className="PostAuthor">

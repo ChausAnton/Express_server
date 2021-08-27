@@ -218,3 +218,27 @@ input.yellow-input:focus {
 .EditPostTitleCard {
     min-height: 55px;
 }
+
+.CommentDate {
+    min-width: 100%;
+}
+
+.CommentDateDopBox {
+    float: right;
+}
+
+.ChipPostUserBox {
+    position: relative;
+    top: -115px;
+}
+
+.UserChipBox, .DateChipBox {
+    float: right;
+}
+
+.ChipPostDateBox {
+    position: relative;
+    top: -57px;
+    left: 100px;
+    min-width: 100%;
+}

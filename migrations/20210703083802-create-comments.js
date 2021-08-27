@@ -35,12 +35,12 @@ module.exports = {
       status_comment: {
         type: Sequelize.ENUM('active', 'inactive')
       },
-      createdAt: {
+      CommentCreatedAt: {
         type: 'TIMESTAMP',
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false
       },
-      updatedAt: {
+      CommentUpdatedAt: {
         type: 'TIMESTAMP',
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false

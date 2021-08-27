@@ -14,12 +14,12 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
-      createdAt: {
+      CategoryCreatedAt: {
         type: 'TIMESTAMP',
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false
       },
-      updatedAt: {
+      CategoryUpdatedAt: {
         type: 'TIMESTAMP',
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useHistory} from "react-router-dom";
 
-export const PostsList = ({posts, category}) => {
+export const PostsList = ({posts, category, SearchField}) => {
     const history = useHistory();
 
     if(!posts) {
@@ -17,8 +17,17 @@ export const PostsList = ({posts, category}) => {
 
     const postsPerPage = 2
     const numberOfPages = (posts.postsCount % postsPerPage) === 0 ? (posts.postsCount / postsPerPage) : parseInt((posts.postsCount / postsPerPage) + 1);
-    const nextPage = (parseInt(posts.CurPage) + 1) <= numberOfPages ? `/home/${(parseInt(posts.CurPage) + 1)}/${category}` : `/home/${numberOfPages}/${category}`;
-    const prevPage = (parseInt(posts.CurPage) - 1) > 0 ? `/home/${(parseInt(posts.CurPage) - 1)}/${category}` :  `/home/1/${category}`;
+    let nextPage = (parseInt(posts.CurPage) + 1) <= numberOfPages ? `/home/${(parseInt(posts.CurPage) + 1)}` : `/home/${numberOfPages}`;
+    let prevPage = (parseInt(posts.CurPage) - 1) > 0 ? `/home/${(parseInt(posts.CurPage) - 1)}` :  `/home/1`;
+    if(category) {
+        nextPage += '/' + category;
+        prevPage += '/' + category;
+    }
+    if(SearchField) {
+        nextPage += '/' + SearchField;
+        prevPage += '/' + SearchField;
+    }
+    
     return (
         <div>
             { posts.posts.map((post) => {
@@ -60,18 +69,18 @@ export const PostsList = ({posts, category}) => {
             <ul className="pagination">
                 <li className="disabled"><a href={prevPage}><i className="material-icons">chevron_left</i></a></li>
                 {Array.from({length: numberOfPages}, (_, i) => i + 1).map((page) => {
-                    let pageUrl;
-                    if(category) 
-                        pageUrl = "/home/" + page + '/' + category
-                    else 
-                        pageUrl = "/home/" + page
+                    let UrlParams = '/home/' + page;
+                    if(category)
+                        UrlParams += '/' + category;
+                    if(SearchField) 
+                        UrlParams += '/' + SearchField;
                     if(parseInt(posts.CurPage) === page) {
                         return (
-                            <li key={page} className="active"><a href={pageUrl}>{page}</a></li>
+                            <li key={page} className="active"><a href={UrlParams}>{page}</a></li>
                         );
                     }
                     return (
-                        <li key={page} className="waves-effect"><a href={pageUrl}>{page}</a></li>
+                        <li key={page} className="waves-effect"><a href={UrlParams}>{page}</a></li>
                     );
 
                     })

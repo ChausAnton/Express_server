@@ -22,7 +22,7 @@ export const useRoutes = isAuth => {
                 <Route path="/detail/:id" exact>
                     <DetailPage />
                 </Route>
-                <Route path="/home/:page?/:category?" exact>
+                <Route path="/home/:page?/:category?/:SearchField?" exact>
                     <HomePage />
                 </Route>
                 <Redirect to="/home" />

@@ -7,28 +7,27 @@ import { useParams } from "react-router-dom";
 
 
 export const HomePage = () => {
-    const {page, category} = useParams();
+    const {page, category, SearchField} = useParams();
     const [posts, setPosts] = useState();
     const {loading, request} = useHttp();
     const {token} = useContext(AuthContext);
 
     const fetchPosts = useCallback(async() => {
         try {
-            let UrlParams = '/';
+            let UrlParams = '/1';
             if(page)
-                UrlParams += page;
-            if(!page)
-                UrlParams += '1'
+                UrlParams = '/' + page;
             if(category)
                 UrlParams += '/' + category;
-
+            if(SearchField) 
+                UrlParams += '/' + SearchField;
             const fetched = await request('/post/getPostPerPage' + UrlParams, 'GET', null, {
                 'x-access-token': token
             })
             setPosts(fetched)
         }
         catch (e) {}
-    }, [token, request, page, category]);
+    }, [token, request, page, category, SearchField]);
 
     useEffect( () => {
         fetchPosts();
@@ -40,7 +39,7 @@ export const HomePage = () => {
 
     return (
         <>
-            {!loading && <PostsList posts={posts} category={category}/>}
+            {!loading && <PostsList posts={posts} category={category} SearchField={SearchField}/>}
         </>
     );
 }

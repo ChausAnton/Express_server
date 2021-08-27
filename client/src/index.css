@@ -242,3 +242,16 @@ input.yellow-input:focus {
     left: 100px;
     min-width: 100%;
 }
+
+.searchBarBox {
+    position: relative;
+    top: -70px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.SearchButton {
+    position: relative;
+    top: -127px;
+    left: -100px;
+}

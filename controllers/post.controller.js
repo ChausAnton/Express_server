@@ -334,12 +334,19 @@ exports.getPostCategoryFilter = async(req, res) => {
 
 exports.getPostPerPage = async(req, res) => {
     const postsPerPage = 2
+    console.log(req.params.SearchField)
     if(res.locals.user && res.locals.admin && req.params.page > 0) {
         let posts;
         let count;
         if(req.params.category) {
-            posts = await db.sequelize.query(`select * from users inner join posts on users.id = posts.author_id where exists (select * from Category_sub_tables where posts.id = Category_sub_tables.post_id and exists (select * from Categories where Categories.id = Category_sub_tables.category_id and Categories.category_title = '${req.params.category}')) order by posts.id DESC limit ${(req.params.page - 1) * postsPerPage}, ${postsPerPage};`, { type: db.sequelize.QueryTypes.SELECT });
-            count = await db.sequelize.query(`select count(*) from posts where exists (select * from Category_sub_tables where posts.id = Category_sub_tables.post_id and exists (select * from Categories where Categories.id = Category_sub_tables.category_id and Categories.category_title = '${req.params.category}'));`, { type: db.sequelize.QueryTypes.SELECT });
+            if(req.params.category.localeCompare('!') === 0 && req.params.SearchField) {
+                posts = await db.sequelize.query(`select * from users inner join posts on users.id = posts.author_id where posts.title like "%${req.params.SearchField}%" order by posts.id DESC limit ${(req.params.page - 1) * postsPerPage}, ${postsPerPage};` , { type: db.sequelize.QueryTypes.SELECT });
+                count = await db.sequelize.query(`select count(*) from posts where posts.title like "%${req.params.SearchField}%";`, { type: db.sequelize.QueryTypes.SELECT });
+            }
+            else {
+                posts = await db.sequelize.query(`select * from users inner join posts on users.id = posts.author_id where exists (select * from Category_sub_tables where posts.id = Category_sub_tables.post_id and exists (select * from Categories where Categories.id = Category_sub_tables.category_id and Categories.category_title = '${req.params.category}')) order by posts.id DESC limit ${(req.params.page - 1) * postsPerPage}, ${postsPerPage};`, { type: db.sequelize.QueryTypes.SELECT });
+                count = await db.sequelize.query(`select count(*) from posts where exists (select * from Category_sub_tables where posts.id = Category_sub_tables.post_id and exists (select * from Categories where Categories.id = Category_sub_tables.category_id and Categories.category_title = '${req.params.category}'));`, { type: db.sequelize.QueryTypes.SELECT });
+            }
         }
         else {
             posts = await db.sequelize.query(`select * from users inner join posts on users.id = posts.author_id order by posts.id DESC limit ${(req.params.page - 1) * postsPerPage}, ${postsPerPage};` , { type: db.sequelize.QueryTypes.SELECT });
@@ -368,10 +375,15 @@ exports.getPostPerPage = async(req, res) => {
     else if (req.params.page > 0) {
         let posts;
         let count;
-
         if(req.params.category) {
-            posts = await db.sequelize.query(`select * from posts inner join users on users.id = posts.author_id where status = 'active' and exists (select * from Category_sub_tables where posts.id = Category_sub_tables.post_id and exists (select * from Categories where Categories.id = Category_sub_tables.category_id and Categories.category_title = '${req.params.category}')) order by posts.id DESC limit ${(req.params.page - 1) * postsPerPage}, ${postsPerPage};`, { type: db.sequelize.QueryTypes.SELECT });
-            count = await db.sequelize.query(`select count(IF(status = 'active', 1, null)) from posts where exists (select * from Category_sub_tables where posts.id = Category_sub_tables.post_id and exists (select * from Categories where Categories.id = Category_sub_tables.category_id and Categories.category_title = '${req.params.category}'));`, { type: db.sequelize.QueryTypes.SELECT });
+            if(req.params.category.localeCompare('!') === 0 && req.params.SearchField) {
+                posts = await db.sequelize.query(`select * from users inner join posts on users.id = posts.author_id where status = 'active' and posts.title like "%${req.params.SearchField}%" order by posts.id DESC limit ${(req.params.page - 1) * postsPerPage}, ${postsPerPage};` , { type: db.sequelize.QueryTypes.SELECT });
+                count = await db.sequelize.query(`select count(IF(status = 'active', 1, null)) from posts where posts.title like "%${req.params.SearchField}%";`, { type: db.sequelize.QueryTypes.SELECT });
+            }
+            else {
+                posts = await db.sequelize.query(`select * from posts inner join users on users.id = posts.author_id where status = 'active' and exists (select * from Category_sub_tables where posts.id = Category_sub_tables.post_id and exists (select * from Categories where Categories.id = Category_sub_tables.category_id and Categories.category_title = '${req.params.category}')) order by posts.id DESC limit ${(req.params.page - 1) * postsPerPage}, ${postsPerPage};`, { type: db.sequelize.QueryTypes.SELECT });
+                count = await db.sequelize.query(`select count(IF(status = 'active', 1, null)) from posts where exists (select * from Category_sub_tables where posts.id = Category_sub_tables.post_id and exists (select * from Categories where Categories.id = Category_sub_tables.category_id and Categories.category_title = '${req.params.category}'));`, { type: db.sequelize.QueryTypes.SELECT });
+            }
         }
         else {
             posts = await db.sequelize.query(`select * from users inner join posts on users.id = posts.author_id where status = 'active' order by posts.id DESC limit ${(req.params.page - 1) * postsPerPage}, ${postsPerPage};` , { type: db.sequelize.QueryTypes.SELECT });

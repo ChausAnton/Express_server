@@ -3,16 +3,19 @@ import { useMessage } from '../hooks/message.hook';
 import axios from 'axios';
 import { useHttp } from '../hooks/http.hook';
 import { AuthContext } from '../context/AuthContext';
+import { useParams } from "react-router-dom";
+import Select from 'react-select';
 
 
-export const EditProfile = ({setEditProfileOnFalse}) => {
-    const {userId, token} = useContext(AuthContext);
+export const EditProfile = ({setEditProfileOnFalse, user}) => {
+    const {userId, token, role} = useContext(AuthContext);
     const [file, setFile] = useState();
+    const {id} = useParams();
     const {error, request, clearError} = useHttp()
     const message = useMessage();
 
     const [form, setForm] = useState({
-        real_name: ''
+        real_name: '', role: user.role
     });
 
     useEffect( () => {
@@ -33,10 +36,38 @@ export const EditProfile = ({setEditProfileOnFalse}) => {
     }
 
     const chengeHandler = event => {
-        event.preventDefault();
-        setForm({...form, [event.target.name]: event.target.value})
+        if(event.target) {
+            event.preventDefault();
+            setForm({...form, [event.target.name]: event.target.value})
+        }
+        else {
+            form.role = event.value
+        }
     };
-    
+
+    const options = [{value: "user", label: "user"},
+                    {value: "admin", label: "admin"}];
+
+    const SelectStyle = {
+        option: (provided) => ({
+            ...provided,
+            color: '#000000',
+            padding: 10,
+        }),
+        valueContainer: base => ({
+            ...base,
+            color: 'white',
+        }),
+        control: (base, state) => ({
+            ...base,
+            boxShadow: "none",
+            border: `2px solid ${state.isFocused ? "#ffeb3b" : "#1976d2"}`,
+            '&:hover': {
+                border: `2px solid ${state.isFocused ? "#ffeb3b" : "#1976d2"}`
+            }
+        })
+    }
+
     const profileUpdateHandler = async(event) => {
         try {
             if(file) {
@@ -49,7 +80,10 @@ export const EditProfile = ({setEditProfileOnFalse}) => {
                                                                                         'Acceptccept': 'application/json'
                                                                                         }})
             }
-            await request('/user/updateUser/' + userId, 'PUT', {...form}, {'x-access-token': token});
+            if(id)
+                await request('/user/updateUser/' + id, 'PUT', {...form}, {'x-access-token': token});
+            else 
+                await request('/user/updateUser/' + userId, 'PUT', {...form}, {'x-access-token': token});
             window.location.reload();
             setEditProfileOnFalse();
         }
@@ -70,25 +104,49 @@ export const EditProfile = ({setEditProfileOnFalse}) => {
                                 <i className="material-icons">arrow_back</i>
                         </button>
                         <img src={PrifileImage} alt="Avatar" width="200" height="200" className="EditProfileImage" id="ProfileImage"/>
-                        <div className="boxForLoadNewImageButton">
-                            <button className="btn-floating btn-large waves-effect waves-light grey lighten-1 LoadNewImage" id="LoadNewImageButton" onClick={openSelectImage}><i className="material-icons">add</i></button>
-                        </div>
+                        {(!id || (userId === id)) ? 
+                            <div className="boxForLoadNewImageButton">
+                                <button className="btn-floating btn-large waves-effect waves-light grey lighten-1 LoadNewImage" id="LoadNewImageButton" onClick={openSelectImage}><i className="material-icons">add</i></button>
+                            </div>
+                        : <></>}
+                        
                     </div>
                     
                     <div className="card-content CardContent blue darken-2">
-                        <div className="input-field">
-                            <input placeholder="input real name" 
-                                id="real_name" 
-                                type="text" 
-                                name="real_name" 
-                                className="yellow-input white-text" 
-                                onChange={chengeHandler} 
-                                />
-                            <label htmlFor="real_name">real name</label>
+                        { ((id && (userId !== id)) && (role && role.localeCompare('admin') === 0)) ?
+                        <div className="input-field col s12 SelectForEditUser">
+                            <Select 
+                                defaultValue={{ label: user.role, value: user.role }}
+                                placeholder="Select user's role"
+                                options={options}
+                                closeMenuOnSelect={true}
+                                id="role" 
+                                name="role" 
+                                styles={SelectStyle}
+                                onChange={chengeHandler}
+                            />
+                            <label htmlFor="role" hidden>role</label>
                         </div>
-                        <input type="file" onChange={fileSelectedHandler} name="Avatar" hidden id="selectFileInput"/>
-                        <button className="btn waves-effect waves-light red" onClick={profileUpdateHandler}>Submit
-                            <i class="material-icons right">send</i>
+                        :
+                            <>
+                            <div className="input-field">
+                                <input placeholder="input real name" 
+                                    id="real_name" 
+                                    type="text" 
+                                    name="real_name" 
+                                    className="yellow-input white-text" 
+                                    onChange={chengeHandler} 
+                                    />
+                                <label htmlFor="real_name">real name</label>
+                            </div>
+                            <input type="file" onChange={fileSelectedHandler} name="Avatar" hidden id="selectFileInput"/>
+                            </>
+                        }
+                        <button 
+                            className="btn red" 
+                            onClick={profileUpdateHandler} 
+                            >Submit
+                            <i className="material-icons right">send</i>
                         </button>
                     </div>
             </div>

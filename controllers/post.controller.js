@@ -365,6 +365,7 @@ exports.getPostPerPage = async(req, res) => {
                     rating: post.rating,
                     real_name: post.real_name,
                     title: post.title,
+                    status: post.status,
                     createdAt: post.PostCreatedAt,
                     updatedAt: post.PostUpdatedAt
                 }

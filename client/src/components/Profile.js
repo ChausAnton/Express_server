@@ -6,7 +6,7 @@ import { Link} from "react-router-dom";
 
 export const Profile = ({user, posts}) => {
     const [editProfile, setEditProfile] = useState(false);
-    const {userId} = useContext(AuthContext);
+    const {userId, role} = useContext(AuthContext);
     const {id} = useParams();
 
     if(!user) {
@@ -29,9 +29,9 @@ export const Profile = ({user, posts}) => {
 
     return (
     <>
-    {   (editProfile && (!id || (userId === id))) ? 
+    {   (editProfile && ((!id || (userId === id)) || (role && role.localeCompare('admin') === 0))) ? 
         (<div>
-            <EditProfile setEditProfileOnFalse={setEditProfileOnFalse}/>
+            <EditProfile setEditProfileOnFalse={setEditProfileOnFalse} user={user}/>
         </div>) 
     
         : (<div className="center ProfileCard">
@@ -41,7 +41,7 @@ export const Profile = ({user, posts}) => {
                         <span className="ProfileUserName">{user.real_name}</span>
                         <img src={PrifileImage} alt="Avatar" width="200" height="200" className="profileImage"/>
                     </div>
-                    {(!id || (userId === parseInt(id))) ?
+                    {((!id || (userId === parseInt(id))) || (role && role.localeCompare('admin') === 0)) ?
                         <button className="btn-floating btn-large waves-effect waves-light red EditButton" onClick={setEditProfileOnTrue}> 
                                 <i className="material-icons" >edit</i>
                         </button> : <></>

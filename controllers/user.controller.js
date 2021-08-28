@@ -46,7 +46,6 @@ exports.updateUser = async(req, res) => {
     }
 
     if(res.locals.admin && req.body.role) {
-
         User.update({role: req.body.role}, {where: {id: req.params.id}});
     }
     

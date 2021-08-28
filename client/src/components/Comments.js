@@ -7,7 +7,7 @@ import { useMessage } from "../hooks/message.hook";
 export const Comments = ({comments}) => {
     const {error, clearError, request} = useHttp();
     const history = useHistory();
-    const {token} = useContext(AuthContext);
+    const {token, role} = useContext(AuthContext);
     const message = useMessage();
     const {id} = useParams();
 
@@ -26,6 +26,16 @@ export const Comments = ({comments}) => {
 
     if(!comments) {
         return <p className="center">comments not found</p>
+    }
+
+    const commentToActiveInactive = async(event) => {
+        event.preventDefault();
+        try {
+            const toStatus = event.target.innerText.split(' ')[1]
+            await request('/comment/updateComment/' + event.target.id, 'PUT', {status_comment: toStatus}, {'x-access-token': token})
+            window.location.reload();
+        }
+        catch (e) {}
     }
 
     const chengeHandler = event => {
@@ -54,7 +64,6 @@ export const Comments = ({comments}) => {
         setLikeDislike(event.target.id.split(' ')[0], event.target.id.split(' ')[1])
     }
 
-
     return (
         <div>
             {
@@ -64,7 +73,7 @@ export const Comments = ({comments}) => {
                         <div key={index}>
                             <div className="divider"></div>
                             <div className="section">
-                                <div className="card-panel blue darken-1 hoverable">
+                                <div className="card-panel blue darken-1 hoverable CommentCard">
                                     <div className="CommentAuthorBox">
                                         <div className="chip CommentAuthor" onClick={ShowAuthorProfile} id={comment.author_id_comment}>
                                             <img src={authorImage} alt="Contact Person"/>
@@ -96,6 +105,25 @@ export const Comments = ({comments}) => {
                                         </div>     
                                     </div>
                                 </div>
+                                    <div className="CommentStatusBox">
+                                        <div className="InnerCommentStatusBox">
+                                            {(role && role.localeCompare('admin') === 0) ? 
+                                                    <><div className="chip">
+                                                        Status: {comment.status_comment}
+                                                    </div>
+                                                    {(comment.status_comment.localeCompare('active') === 0) ? 
+                                                        <div className={"chip " + comment.status_comment} onClick={commentToActiveInactive} id={comment.id}>
+                                                            to inactive
+                                                        </div>
+                                                        :
+                                                        <div className={"chip " + comment.status_comment} onClick={commentToActiveInactive} id={comment.id}>
+                                                            to active
+                                                        </div>
+                                                    }</>
+                                                    : <></>
+                                                }
+                                            </div>
+                                    </div>
                             </div>
                         </div>
                     )

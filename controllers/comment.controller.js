@@ -61,6 +61,7 @@ exports.getCommentsForPost = async(req, res) => {
                         content_comment: iter.content_comment,
                         likes_comment: iter.likes_comment,
                         post_id_comment: iter.post_id_comment,
+                        status_comment: iter.status_comment,
                         createdAt: iter.CommentCreatedAt,
                         updatedAt: iter.CommentUpdatedAt
                     }
@@ -167,9 +168,9 @@ exports.updateComment = async(req, res) => {
     }
 
     if(!res.locals.admin && !res.locals.user)
-        res.status(403).send("You don't have permission to change this data");
+        res.status(403).send({message: "You don't have permission to change this data"});
     else
-        res.status(200).send("data updated");
+        res.status(200).send({message: "data updated"});
 };
 
 exports.deleteComment = async(req, res) => {

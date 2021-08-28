@@ -6,7 +6,7 @@ import { useHttp } from "../hooks/http.hook";
 export const Navbar = () => {
     const [user, setUser] = useState();
     const {loading, request} = useHttp();
-    const {userId} = useContext(AuthContext);
+    const {userId, role} = useContext(AuthContext);
     const history = useHistory();
     const [SearchActive, setSearchActive] = useState(false);
 
@@ -112,7 +112,7 @@ export const Navbar = () => {
                             </div>
                         </div>
                         <div className="SearchButton">
-                            <a className="hoverable" onClick={RedirectSearchRes}><i className="material-icons right">search</i></a>
+                            <i onClick={RedirectSearchRes}><i className="material-icons right">search</i></i>
                         </div>
                     </div>
                     <div hidden={SearchActive}>
@@ -126,8 +126,9 @@ export const Navbar = () => {
                             }
                         </NavLink>
                         <ul id="nav-mobile" className="right">
-                            <li><a className="hoverable" onClick={setSearchActiveOnTrue}><i className="material-icons right">search</i></a></li>
-                            <li><a className="dropdown-trigger" data-target="dropdown1" id="dropdown-trigger">Categories<i className="material-icons right">arrow_drop_down</i></a></li>
+                            <li><i onClick={setSearchActiveOnTrue}><i className="material-icons right">search</i></i></li>
+                            {(role && role.localeCompare('admin') === 0) ? <li><NavLink to="/register">Create new user</NavLink></li> : <></>}
+                            <li><a className="dropdown-trigger" href="/" data-target="dropdown1" id="dropdown-trigger">Categories<i className="material-icons right">arrow_drop_down</i></a></li>
                             <li><NavLink to="/create">Create Post</NavLink></li>
                             <li><a className="blue darken-3" href="/home" onClick={logoutHandler}>Logout</a></li>
                         </ul>

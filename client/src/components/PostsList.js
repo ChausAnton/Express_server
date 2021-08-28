@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useHistory} from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+import { useHttp } from "../hooks/http.hook";
 
 export const PostsList = ({posts, category, SearchField}) => {
     const history = useHistory();
+    const {role, token} = useContext(AuthContext);
+    const {request} = useHttp();
 
     if(!posts) {
         return <p className="center">Posts not found</p>
@@ -13,6 +17,16 @@ export const PostsList = ({posts, category, SearchField}) => {
     const openUser = (event) => {
         event.preventDefault();
         history.push('/profile/' + event.target.id)
+    }
+
+    const postToActiveInactive = async(event) => {
+        event.preventDefault();
+        try {
+            const toStatus = event.target.innerText.split(' ')[1]
+            await request('/post/updatePost/' + event.target.id, 'PUT', {status: toStatus}, {'x-access-token': token})
+            window.location.reload();
+        }
+        catch (e) {}
     }
 
     const postsPerPage = 2
@@ -27,7 +41,6 @@ export const PostsList = ({posts, category, SearchField}) => {
         nextPage += '/' + SearchField;
         prevPage += '/' + SearchField;
     }
-    
     return (
         <div>
             { posts.posts.map((post) => {
@@ -61,6 +74,22 @@ export const PostsList = ({posts, category, SearchField}) => {
                                         </div>
                                     </div>
                                 </div>
+                                    {(role && role.localeCompare('admin') === 0) ? 
+                                        <><div className="chip">
+                                            Status: {post.status}
+                                        </div>
+                                        {(post.status.localeCompare('active') === 0) ? 
+                                            <div className={"chip " + post.status} onClick={postToActiveInactive} id={post.id}>
+                                                to inactive
+                                            </div>
+                                            :
+                                            <div className={"chip " + post.status} onClick={postToActiveInactive} id={post.id}>
+                                                to active
+                                            </div>
+                                        }</>
+                                         : <></>
+                                    }
+                                    
                             </div>
                         </div>
                     </Link>

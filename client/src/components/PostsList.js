@@ -10,7 +10,6 @@ export const PostsList = ({posts, category, SearchField}) => {
     if(!posts) {
         return <p className="center">Posts not found</p>
     }
-    console.log(posts)
     if(!category)
         category = "";
 

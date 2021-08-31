@@ -70,7 +70,6 @@ exports.getPostDetail = async(req, res) => {
         }
         index++;
     }
-    console.log(getCommentsAuthors)
     const CommentsAuthors = await db.sequelize.query(`${getCommentsAuthors};`, { type: db.sequelize.QueryTypes.SELECT })
     for(let i = 0; i < data.Comments_data.length; i++) {
         data.Comments_data[i].CommentAuthor = CommentsAuthors[i]
@@ -334,7 +333,6 @@ exports.getPostCategoryFilter = async(req, res) => {
 
 exports.getPostPerPage = async(req, res) => {
     const postsPerPage = 2
-    console.log(req.params.SearchField)
     if(res.locals.user && res.locals.admin && req.params.page > 0) {
         let posts;
         let count;

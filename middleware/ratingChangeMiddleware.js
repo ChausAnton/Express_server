@@ -19,7 +19,6 @@ exports.Change = async(post_id, comment_id, number) => {
         
         Comment.update({likes_comment: (comment.likes_comment + number)}, {where: {id: comment_id}});
     }
-    console.log(author_id)
     User.findOne({where: {id: author_id}}).then((user) => {
         if(user)
             User.update({rating: (user.rating + number)}, {where: {id: user.id}})

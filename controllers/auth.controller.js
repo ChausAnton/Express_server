@@ -30,7 +30,6 @@ exports.signUp = async(req, res) => {
 
         if(req.body.role) {
             if (req.body.role.localeCompare('admin') == 0) {
-                console.log("ok")
                 if(!res.locals.admin) {
                     return res.status(401).send({message:"Only admin can create admin"})
                 }

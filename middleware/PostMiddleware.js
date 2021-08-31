@@ -14,7 +14,6 @@ exports.addCategory = async(CategroyJson, postID) => {
                 await Category_sub_table.create($data);
             }
             catch (e) {
-                console.log(e);
             }
         }
     });

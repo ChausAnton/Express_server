@@ -2,13 +2,14 @@
   "name": "js_test",
   "version": "1.0.0",
   "main": "index.js",
+  "homepage": ".",
   "scripts": {
     "start": "cross-env NODE_ENV=production npm run server",
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon src/index.js",
     "client": "npm run start --prefix client",
     "client:install": "npm install --prefix client",
-    "client:build": "npm run build --prefix client",
+    "client:build": "INLINE_RUNTIME_CHUNK=false npm run build --prefix client",
     "dev": "cross-env NODE_ENV=development concurrently \"npm run server\" \"npm run client\""
   },
   "author": "chaus anton",
@@ -37,6 +38,7 @@
     "nodemailer": "^6.6.3",
     "nodemon": "^2.0.9",
     "package-lock.json": "^1.0.0",
+    "package.json": "^2.0.1",
     "react-select": "^4.3.1",
     "sequelize": "^6.6.4",
     "utils": "^0.3.1"

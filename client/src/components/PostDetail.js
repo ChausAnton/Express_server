@@ -5,6 +5,7 @@ import { Comments } from "./Comments";
 import { useMessage } from '../hooks/message.hook';
 import { AuthContext } from '../context/AuthContext';
 import { EditPost } from "./EditPost";
+import { FiEdit2, FiArrowDown, FiArrowUp } from "react-icons/fi";
 
 export const PostDetail = ({post, commentsData}) => {
     const history = useHistory();
@@ -93,7 +94,7 @@ export const PostDetail = ({post, commentsData}) => {
                     </div>
                     {post.Author_data.author_id === userId ? 
                         <button className="btn-floating btn-large waves-effect waves-light red EditButtonPost" onClick={setEditPostOnTrue}> 
-                                    <i className="material-icons" >edit</i>
+                                    <FiEdit2 className="FiEdit2Size"/>
                         </button> :
                         <></>
                     }
@@ -102,13 +103,13 @@ export const PostDetail = ({post, commentsData}) => {
                         <div className="RatingChipBox">
                             <div className="RatingBox chip">
                                 <div className="Like" id={1} onClick={likeDislikeHandler} >
-                                    <i className="material-icons" id='like'>arrow_upward</i>
+                                    <FiArrowUp className="FiArrowDownFiArrowUpSize"/>
                                 </div>
                                 <div className="RatingContainer">
                                     <span className="flow-text">{post.Post_data.likes}</span>
                                 </div>
                                 <div className="Dislike" onClick={likeDislikeHandler} id={-1}>
-                                    <i className="material-icons" id="dislike">arrow_downward</i>
+                                    <FiArrowDown className="FiArrowDownFiArrowUpSize"/>
                                 </div>
                             </div>
                         </div>               

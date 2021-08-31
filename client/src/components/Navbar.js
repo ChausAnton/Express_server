@@ -2,6 +2,9 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { NavLink, useHistory } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { useHttp } from "../hooks/http.hook";
+import { FiSearch } from "react-icons/fi";
+import { MdStars } from "react-icons/md";
+import { MdKeyboardArrowDown } from "react-icons/md";
 
 export const Navbar = () => {
     const [user, setUser] = useState();
@@ -112,7 +115,7 @@ export const Navbar = () => {
                             </div>
                         </div>
                         <div className="SearchButton">
-                            <i onClick={RedirectSearchRes}><i className="material-icons right">search</i></i>
+                            <i onClick={RedirectSearchRes}><FiSearch /></i>
                         </div>
                     </div>
                     <div hidden={SearchActive}>
@@ -121,14 +124,14 @@ export const Navbar = () => {
                             <img src={userAvater} alt="avatar" width="50" height="50"/>
                             <div className="UserInfoNavbar">{user.login}</div>
                             {user.role.localeCompare("admin") === 0 ?
-                                <i className="material-icons UserInfoNavbarIcon">star</i> :
+                                <MdStars className="UserInfoNavbarIcon" />:
                                 <></>
                             }
                         </NavLink>
                         <ul id="nav-mobile" className="right">
-                            <li><i onClick={setSearchActiveOnTrue}><i className="material-icons right">search</i></i></li>
+                            <li><i onClick={setSearchActiveOnTrue}><FiSearch /></i></li>
                             {(role && role.localeCompare('admin') === 0) ? <li><NavLink to="/register">Create new user</NavLink></li> : <></>}
-                            <li><a className="dropdown-trigger" href="/" data-target="dropdown1" id="dropdown-trigger">Categories<i className="material-icons right">arrow_drop_down</i></a></li>
+                            <li><a className="dropdown-trigger" href="/" data-target="dropdown1" id="dropdown-trigger">Categories<MdKeyboardArrowDown  className="FiArrowDownNavBarDropDown"/></a></li>
                             <li><NavLink to="/create">Create Post</NavLink></li>
                             <li><a className="blue darken-3" href="/home" onClick={logoutHandler}>Logout</a></li>
                         </ul>

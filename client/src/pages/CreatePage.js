@@ -4,6 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useHttp } from '../hooks/http.hook';
 import { useMessage } from '../hooks/message.hook';
 import Select from 'react-select';
+import { FiSend} from "react-icons/fi";
 
 
 export const CreatePage = () => {
@@ -125,7 +126,7 @@ export const CreatePage = () => {
                 </div>
                 <div className="card-action center-align">
                     <button className="btn waves-light red" onClick={PostHandler} disabled={loading}>Submit
-                        <i class="material-icons right">send</i>
+                        <FiSend className="FiSendSizeEditProfile"/>
                     </button>
                 </div>
             </div>

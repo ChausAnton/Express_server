@@ -3,6 +3,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { useHttp } from "../hooks/http.hook";
 import {AuthContext} from '../context/AuthContext'
 import { useMessage } from "../hooks/message.hook";
+import { FiArrowDown, FiArrowUp } from "react-icons/fi";
 
 export const Comments = ({comments}) => {
     const {error, clearError, request} = useHttp();
@@ -93,13 +94,13 @@ export const Comments = ({comments}) => {
                                         <div className="RatingChipBox">
                                             <div className=" chip">
                                                 <div className="Like" onClick={likeDislikeHandler}>
-                                                    <i className="material-icons" id={`like ${comment.id}`}>arrow_upward</i>
+                                                    <FiArrowUp id={`like ${comment.id}`} />
                                                 </div>
                                                 <div className="RatingContainer">
                                                     <span className="flow-text">{comment.likes_comment}</span>
                                                 </div>
                                                 <div className="Dislike" onClick={likeDislikeHandler}>
-                                                    <i className="material-icons" id={`dislike ${comment.id}`}>arrow_downward</i>
+                                                    <FiArrowDown id={`dislike ${comment.id}`} />
                                                 </div>
                                             </div>
                                         </div>     

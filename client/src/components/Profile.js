@@ -3,6 +3,7 @@ import { EditProfile } from "./EditProfile";
 import { AuthContext } from '../context/AuthContext';
 import { useParams } from "react-router-dom";
 import { Link} from "react-router-dom";
+import { FiEdit2} from "react-icons/fi";
 
 export const Profile = ({user, posts}) => {
     const [editProfile, setEditProfile] = useState(false);
@@ -43,7 +44,7 @@ export const Profile = ({user, posts}) => {
                     </div>
                     {((!id || (userId === parseInt(id))) || (role && role.localeCompare('admin') === 0)) ?
                         <button className="btn-floating btn-large waves-effect waves-light red EditButton" onClick={setEditProfileOnTrue}> 
-                                <i className="material-icons" >edit</i>
+                                <FiEdit2 className="FiEdit2Size"/>
                         </button> : <></>
                     }
                     

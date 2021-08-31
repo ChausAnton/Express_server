@@ -5,6 +5,7 @@ import { useHttp } from '../hooks/http.hook';
 import { AuthContext } from '../context/AuthContext';
 import { useParams } from "react-router-dom";
 import Select from 'react-select';
+import { FiArrowLeft, FiSend, FiPlus } from "react-icons/fi";
 
 
 export const EditProfile = ({setEditProfileOnFalse, user}) => {
@@ -101,12 +102,12 @@ export const EditProfile = ({setEditProfileOnFalse, user}) => {
                 <div className="card">
                     <div className="CardTopBackgroud blue darken-2">
                         <button className="btn-floating btn-large waves-effect waves-light grey lighten-1 ButtonBack" onClick={setEditProfileOnFalse}> 
-                                <i className="material-icons">arrow_back</i>
+                                <FiArrowLeft className="FiArrowLeftSizeEditProfile"/>
                         </button>
                         <img src={PrifileImage} alt="Avatar" width="200" height="200" className="EditProfileImage" id="ProfileImage"/>
                         {(!id || (userId === id)) ? 
                             <div className="boxForLoadNewImageButton">
-                                <button className="btn-floating btn-large waves-effect waves-light grey lighten-1 LoadNewImage" id="LoadNewImageButton" onClick={openSelectImage}><i className="material-icons">add</i></button>
+                                <button className="btn-floating btn-large waves-effect waves-light grey lighten-1 LoadNewImage" id="LoadNewImageButton" onClick={openSelectImage}><FiPlus className="FiPlusSizeEditProfile"/></button>
                             </div>
                         : <></>}
                         
@@ -146,7 +147,7 @@ export const EditProfile = ({setEditProfileOnFalse, user}) => {
                             className="btn red" 
                             onClick={profileUpdateHandler} 
                             >Submit
-                            <i className="material-icons right">send</i>
+                            <FiSend className="FiSendSizeEditProfile"/>
                         </button>
                     </div>
             </div>

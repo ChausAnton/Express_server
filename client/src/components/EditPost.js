@@ -4,6 +4,7 @@ import { useHttp } from '../hooks/http.hook';
 import { AuthContext } from '../context/AuthContext';
 import Select from 'react-select';
 import { useParams } from "react-router-dom";
+import { FiArrowLeft, FiSend } from "react-icons/fi";
 
 
 export const EditPost = ({setEditPostOnFalse}) => {
@@ -90,7 +91,7 @@ export const EditPost = ({setEditPostOnFalse}) => {
             <div className="card blue darken-1">
                 <div className="card-content white-text">
                     <button className="btn-floating btn-large waves-effect waves-light grey lighten-1 EditPostButtonBack" onClick={setEditPostOnFalse}> 
-                            <i className="material-icons">arrow_back</i>
+                            <FiArrowLeft className="FiArrowLeftSizeEditProfile"/>
                     </button>
                     <span className="card-title center-align EditPostTitleCard">Edit Post</span>
                         <div>
@@ -133,7 +134,7 @@ export const EditPost = ({setEditPostOnFalse}) => {
                 </div>
                 <div className="card-action center-align">
                     <button className="btn waves-light red" onClick={PostEditHandler} disabled={loading}>Submit
-                        <i className="material-icons right">send</i>
+                        <FiSend className="FiSendSizeEditProfile"/>
                     </button>
                 </div>
             </div>

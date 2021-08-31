@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Link, useHistory} from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { useHttp } from "../hooks/http.hook";
+import { FiArrowRight, FiArrowLeft} from "react-icons/fi";
 
 export const PostsList = ({posts, category, SearchField}) => {
     const history = useHistory();
@@ -95,7 +96,7 @@ export const PostsList = ({posts, category, SearchField}) => {
                 )
                 }) }
             <ul className="pagination">
-                <li className="disabled"><a href={prevPage}><i className="material-icons">chevron_left</i></a></li>
+                <li className="disabled"><a href={prevPage}><FiArrowLeft /></a></li>
                 {Array.from({length: numberOfPages}, (_, i) => i + 1).map((page) => {
                     let UrlParams = '/home/' + page;
                     if(category)
@@ -113,7 +114,7 @@ export const PostsList = ({posts, category, SearchField}) => {
 
                     })
                 }
-                <li className="waves-effect"><a href={nextPage}><i className="material-icons">chevron_right</i></a></li>
+                <li className="waves-effect"><a href={nextPage}><FiArrowRight /></a></li>
             </ul>
         </div>
     );

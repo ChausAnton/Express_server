@@ -5,6 +5,7 @@ import helmet from 'helmet';
 const fileUpload = require("express-fileupload")
 const cors = require("cors")
 const { checkUser } = require('../middleware/authMiddleware.js')
+const path = require('path')
 
 const app = express();
 app.use(cors());
@@ -25,6 +26,14 @@ app.use('/img', express.static('public/img', {root: '.'}))
 
 app.set('veiws', {root: '.'})
 app.set('view engine', 'ejs')
+
+if(process.env.NODE_ENV === 'production') {
+    app.use('/', express.static(`${__dirname}/../client/build`))
+
+    app.get('*', (req, res) => {
+        res.sendFile(`${__dirname}/../client/build/index.html`)
+    })
+}
 
 app.use('*', checkUser)
 app.use('/image', routes.image)

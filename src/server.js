@@ -49,6 +49,6 @@ app.use((req, res) => {
     res.status(404).send('404 page not found');
 });
 
-app.listen(8080, () => {
+app.listen(80, () => {
     console.log('run');
 });

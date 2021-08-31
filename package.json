@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "start": "cross-env NODE_ENV=production npm run server",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "env NODE_ENV=development nodemon src/index.js"
+    "server": "nodemon src/index.js",
+    "client": "npm run start --prefix client",
+    "client:install": "npm install --prefix client",
+    "client:build": "npm run build --prefix client",
+    "dev": "cross-env NODE_ENV=development concurrently \"npm run server\" \"npm run client\""
   },
   "author": "chaus anton",
   "license": "ISC",
@@ -13,6 +18,7 @@
     "cat": "^0.2.0",
     "concurrently": "^6.2.0",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
     "esm": "^3.2.25",

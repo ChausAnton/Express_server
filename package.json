@@ -9,7 +9,7 @@
     "server": "nodemon src/index.js",
     "client": "npm run start --prefix client",
     "client:install": "npm install --prefix client",
-    "client:build": "INLINE_RUNTIME_CHUNK=false npm run build --prefix client",
+    "client:build": "cross-env INLINE_RUNTIME_CHUNK=false npm run build --prefix client",
     "dev": "cross-env NODE_ENV=development concurrently \"npm run server\" \"npm run client\""
   },
   "author": "chaus anton",

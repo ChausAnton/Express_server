@@ -49,9 +49,9 @@ app.use((req, res) => {
     res.status(404).send('404 page not found');
 });
 
-const host = '0.0.0.0';
-const port = process.env.PORT || 3000;
+// const host = '0.0.0.0';
+// const port = process.env.PORT || 80;
 
-app.listen(port, host, function() {
+app.listen(8080, function() {
     console.log("Server started.......");
   });

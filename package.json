@@ -7,6 +7,7 @@
     "start": "cross-env NODE_ENV=production npm run server",
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon src/index.js",
+    "server:install": "npm install",
     "client": "npm run start --prefix client",
     "client:install": "npm install --prefix client",
     "client:build": "cross-env INLINE_RUNTIME_CHUNK=false npm run build --prefix client",

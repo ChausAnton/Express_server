@@ -218,6 +218,13 @@ exports.updatePost = async(req, res) => {
         });
     }
 
+    if(Object.keys(req.body.category_id).length === 0) {
+        return res.status(400).json({
+            message: "Validation fail",
+            error: "no categories selected" 
+        });
+    }
+
     let post = await Post.findOne({where: {id: req.params.id}})
 
     if(req.body.category_id && ((res.locals.user && post.author_id == res.locals.user.id) || res.locals.admin)) {

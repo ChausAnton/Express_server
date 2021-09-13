@@ -94,13 +94,13 @@ export const Comments = ({comments}) => {
                                         <div className="RatingChipBox">
                                             <div className=" chip">
                                                 <div className="Like" onClick={likeDislikeHandler}>
-                                                    <FiArrowUp id={`like ${comment.id}`} />
+                                                    <FiArrowUp id={`like ${comment.id}`} className="FiArrowDownFiArrowUpSize"/>
                                                 </div>
                                                 <div className="RatingContainer">
                                                     <span className="flow-text">{comment.likes_comment}</span>
                                                 </div>
                                                 <div className="Dislike" onClick={likeDislikeHandler}>
-                                                    <FiArrowDown id={`dislike ${comment.id}`} />
+                                                    <FiArrowDown id={`dislike ${comment.id}`} className="FiArrowDownFiArrowUpSize"/>
                                                 </div>
                                             </div>
                                         </div>     

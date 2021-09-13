@@ -116,7 +116,7 @@ exports.createComment = async(req, res) => {
             author_id_comment: res.locals.user.id,
             content_comment: req.body.content_comment,
             likes_comment: 0,
-            status: "active",
+            status_comment: "active",
         };
 
         const v = new Validator();

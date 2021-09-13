@@ -12,5 +12,5 @@
 - then go back to react_express dir
 - node_modules/.bin/sequelize db:migrate
 - node_modules/.bin/sequelize db:seed:all
-- run npm run start
+- npm run start
 - app will run on http://localhost:8080

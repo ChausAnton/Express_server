@@ -218,12 +218,13 @@ exports.updatePost = async(req, res) => {
         });
     }
 
-    if(Object.keys(req.body.category_id).length === 0) {
-        return res.status(400).json({
-            message: "Validation fail",
-            error: "no categories selected" 
-        });
-    }
+    if(req.body.category_id)
+        if(Object.keys(req.body.category_id).length === 0) {
+            return res.status(400).json({
+                message: "Validation fail",
+                error: "no categories selected" 
+            });
+        }
 
     let post = await Post.findOne({where: {id: req.params.id}})
 

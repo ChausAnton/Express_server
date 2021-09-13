@@ -157,7 +157,7 @@ exports.createPost = async(req, res) => {
             content: {type: "string", empty: false},
             category_id: {type: "object", empty: false}
         };
-
+        console.log(typeof req.body.category_id)
         let data = {
             author_id: res.locals.user.id,
             title: req.body.title,
@@ -173,6 +173,13 @@ exports.createPost = async(req, res) => {
             return res.status(400).json({
                 message: "Validation fail",
                 errors: validationresponse
+            });
+        }
+
+        if(Object.keys(req.body.category_id).length === 0) {
+            return res.status(400).json({
+                message: "Validation fail",
+                error: "no categories selected" 
             });
         }
 
